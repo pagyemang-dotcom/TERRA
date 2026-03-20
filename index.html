@@ -97,6 +97,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:
 .compute-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;z-index:-1;}
 .compute-btn:hover{color:var(--void);}
 .compute-btn:hover::before{transform:scaleX(1);}
+.locate-btn{width:100%;margin-top:0.8rem;background:transparent;border:1px solid var(--grav);color:var(--grav);font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;padding:0.9rem;border-radius:2px;cursor:none;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.locate-btn:hover{background:rgba(68,221,170,0.1);}
+.locate-btn svg{width:14px;height:14px;flex-shrink:0;}
+.locate-status{font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;margin-top:0.8rem;padding:0.6rem 0.8rem;border-radius:2px;display:none;}
+.locate-status.loading{display:block;color:var(--gold);border:1px solid var(--gold-dim);background:rgba(212,168,85,0.05);}
+.locate-status.success{display:block;color:var(--grav);border:1px solid var(--green-dim,#0a5533);background:rgba(68,221,170,0.05);}
+.locate-status.error{display:block;color:var(--isotope);border:1px solid rgba(255,119,68,0.3);background:rgba(255,119,68,0.05);}
+.gps-badge{display:inline-flex;align-items:center;gap:0.35rem;font-family:'Space Mono',monospace;font-size:0.5rem;letter-spacing:0.15em;color:var(--grav);background:rgba(68,221,170,0.08);border:1px solid rgba(68,221,170,0.2);padding:0.2rem 0.5rem;border-radius:2px;margin-left:0.5rem;vertical-align:middle;}
+.gps-dot{width:5px;height:5px;background:var(--grav);border-radius:50%;animation:pulse-dot 1.5s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.6);}}
 .demo-output{position:sticky;top:2rem;}
 .output-terminal{background:var(--deep);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
 .terminal-bar{background:var(--raised);padding:0.75rem 1rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border);}
@@ -285,6 +295,11 @@ footer{padding:4rem 3rem;border-top:1px solid var(--border);display:flex;justify
         </div>
       </div>
       <button class="compute-btn reveal" onclick="computeUPA()">&#10230; Compute Unified Physical Address</button>
+      <button class="locate-btn reveal" onclick="locateMe()" id="locateBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 2"/></svg>
+        Use My Device Location
+      </button>
+      <div class="locate-status" id="locateStatus"></div>
       <div class="progress-row" id="progress-g" style="margin-top:2rem;display:none">
         <div class="progress-label"><span style="color:var(--grav)">G &mdash; Gravitational</span><span style="color:var(--grav)" id="prog-g-val"></span></div>
         <div class="progress-track"><div class="progress-fill fill-g" id="fill-g"></div></div>
@@ -517,6 +532,75 @@ document.getElementById('cityPreset').addEventListener('change',function(){
   document.getElementById('lon').value=lon;
   document.getElementById('hgps').value=h;
 });
+
+// ── Device geolocation ────────────────────────────────────────────────────
+function setLocateStatus(msg, type){
+  const el=document.getElementById('locateStatus');
+  el.className='locate-status '+type;
+  el.textContent=msg;
+}
+
+function locateMe(){
+  if(!navigator.geolocation){
+    setLocateStatus('Geolocation not supported by this browser.','error');
+    return;
+  }
+  const btn=document.getElementById('locateBtn');
+  btn.textContent='Locating...';
+  btn.style.opacity='0.7';
+  setLocateStatus('Requesting device location...','loading');
+
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      const lat=pos.coords.latitude;
+      const lon=pos.coords.longitude;
+      // altitude from GPS if available, else estimate from geoid
+      const h=pos.coords.altitude != null ? pos.coords.altitude : 50.0;
+      const acc=pos.coords.accuracy;
+
+      document.getElementById('lat').value=lat.toFixed(6);
+      document.getElementById('lon').value=lon.toFixed(6);
+      document.getElementById('hgps').value=h.toFixed(1);
+      document.getElementById('cityPreset').value='';
+
+      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 2"/></svg>Location Acquired <span class="gps-badge"><span class="gps-dot"></span>LIVE</span>`;
+      btn.style.opacity='1';
+      setLocateStatus(`GPS fix: (${lat.toFixed(5)}, ${lon.toFixed(5)}) \u00b1${acc.toFixed(0)} m | Alt: ${h.toFixed(1)} m`, 'success');
+
+      // Auto-compute immediately
+      computeUPA();
+    },
+    function(err){
+      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 2"/></svg>Use My Device Location`;
+      btn.style.opacity='1';
+      const msgs={
+        1:'Location access denied. Enable location in browser settings.',
+        2:'Position unavailable. Try again or use manual entry.',
+        3:'Location request timed out. Try again.'
+      };
+      setLocateStatus(msgs[err.code]||'Unknown error.','error');
+    },
+    {enableHighAccuracy:true, timeout:15000, maximumAge:0}
+  );
+}
+
+// Auto-attempt silent location check on page load (no prompt — just checks permission)
+if(navigator.permissions){
+  navigator.permissions.query({name:'geolocation'}).then(function(result){
+    if(result.state==='granted'){
+      // Permission already granted — silently populate fields
+      navigator.geolocation.getCurrentPosition(function(pos){
+        document.getElementById('lat').value=pos.coords.latitude.toFixed(6);
+        document.getElementById('lon').value=pos.coords.longitude.toFixed(6);
+        document.getElementById('hgps').value=(pos.coords.altitude!=null?pos.coords.altitude:50).toFixed(1);
+        document.getElementById('cityPreset').value='';
+        const btn=document.getElementById('locateBtn');
+        btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 2"/></svg>Location Active <span class="gps-badge"><span class="gps-dot"></span>LIVE</span>`;
+        setLocateStatus(`Live location: (${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}) \u00b1${pos.coords.accuracy.toFixed(0)} m`,'success');
+      },()=>{},{enableHighAccuracy:false,timeout:5000,maximumAge:30000});
+    }
+  }).catch(()=>{});
+}
 
 // Physics
 const W0=62636853.4,C=2.99792458e8,AU=1.495978707e11;
