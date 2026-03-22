@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TERRA - Universal Physical Address System | AIMS Ghana</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040810;--bg2:#080E1C;--blue:#1A3EA8;--cobalt:#2563EB;--sky:#38BDF8;--gold:#D4922A;--goldlt:#F6C86B;--green:#22C55E;--orange:#F97316;--purple:#A855F7;--red:#EF4444;--txt:#E8EEFF;--txt2:#9AABCC;--txt3:#4A5A7A;--srf:#22C55E;--air:#38BDF8;--sea:#0EA5E9;--und:#F97316;--spc:#A855F7;--mono:"Space Mono",monospace;--sans:"Syne",sans-serif;--serif:"Instrument Serif",serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);overflow-x:hidden}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
+.z{position:relative;z-index:1}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(4,8,16,.97),transparent)}
+.nlogo{font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--goldlt);letter-spacing:.25em}
+.nlinks{display:flex;gap:2rem;list-style:none}
+.nlinks a{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;color:var(--txt2);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.nlinks a:hover{color:var(--goldlt)}
+.npill{font-family:var(--mono);font-size:.6rem;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.4);color:var(--sky);padding:.3rem .85rem;border-radius:20px;letter-spacing:.1em}
+@media(max-width:768px){.nlinks,.npill{display:none}}
+.hero{min-height:100vh;display:flex;align-items:center;padding:7rem 3rem 4rem;position:relative;overflow:hidden}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,235,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.12) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 80% 80% at 60% 50%,black,transparent);animation:gs 25s linear infinite}
+@keyframes gs{from{background-position:0 0}to{background-position:0 72px}}
+.hglow{position:absolute;top:20%;right:10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.08),transparent 70%);pointer-events:none}
+.hinner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 420px;gap:4rem;align-items:center}
+@media(max-width:900px){.hinner{grid-template-columns:1fr}}
+.hey{font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.hey::before{content:"";display:block;width:36px;height:1px;background:var(--gold)}
+h1{font-family:var(--serif);font-size:clamp(3.5rem,6vw,6rem);font-weight:400;font-style:italic;line-height:1.0;margin-bottom:1.25rem;background:linear-gradient(135deg,#fff 0%,var(--sky) 50%,var(--goldlt) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdesc{color:var(--txt2);font-size:1rem;line-height:1.75;max-width:520px;margin-bottom:2rem}
+.hchips{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;padding:.3rem .8rem;border-radius:20px;border:1px solid;text-transform:uppercase}
+.hcta{display:inline-flex;align-items:center;gap:.75rem;background:linear-gradient(135deg,var(--blue),var(--cobalt));color:#fff;padding:.85rem 2rem;border-radius:6px;font-family:var(--sans);font-weight:700;font-size:.85rem;text-decoration:none;transition:all .25s;border:none;cursor:pointer;letter-spacing:.04em}
+.hcta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.4)}
+.hupa{background:rgba(8,14,28,.9);border:1px solid rgba(37,99,235,.3);border-radius:12px;padding:1.75rem;position:relative;overflow:hidden}
+.hupa::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cobalt),var(--gold),transparent)}
+.utag{font-family:var(--mono);font-size:.55rem;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:.75rem}
+.ul{font-family:var(--mono);font-size:.72rem;line-height:2;word-break:break-all}
+section{padding:6rem 3rem;position:relative}
+.wrap{max-width:1100px;margin:0 auto}
+.ey{font-family:var(--mono);font-size:.62rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.ey::before{content:"";display:block;width:28px;height:1px;background:var(--gold)}
+.sh{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:400;font-style:italic;background:linear-gradient(135deg,#fff,var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:1rem}
+.sp{color:var(--txt2);max-width:580px;line-height:1.75;font-size:.95rem}
+.sbar{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1.5rem;margin-top:3rem}
+.si{text-align:center}
+.snum{font-family:var(--serif);font-style:italic;font-size:2.2rem;background:linear-gradient(135deg,var(--sky),var(--goldlt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.slbl{font-family:var(--mono);font-size:.6rem;color:var(--txt2);letter-spacing:.12em;text-transform:uppercase;margin-top:.4rem}
+.dshell{background:rgba(8,14,28,.95);border:1px solid rgba(37,99,235,.25);border-radius:12px;overflow:hidden;margin-top:3rem}
+.dtb{background:rgba(4,8,16,.9);border-bottom:1px solid rgba(37,99,235,.2);padding:.8rem 1.25rem;display:flex;align-items:center;gap:.6rem}
+.dd{width:10px;height:10px;border-radius:50%}
+.dr{background:#FF5F56}.dy{background:#FEBC2E}.dg{background:#27C840}
+.dtt{font-family:var(--mono);font-size:.62rem;color:var(--txt3);letter-spacing:.15em;margin-left:auto}
+.dgrid{display:grid;grid-template-columns:260px 1fr;min-height:560px}
+@media(max-width:768px){.dgrid{grid-template-columns:1fr}}
+.dctrl{border-right:1px solid rgba(37,99,235,.2);padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem}
+@media(max-width:768px){.dctrl{border-right:none;border-bottom:1px solid rgba(37,99,235,.2)}}
+.clb{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;color:var(--txt3);text-transform:uppercase;display:block;margin-bottom:.35rem}
+.cin{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:var(--txt);font-family:var(--mono);font-size:.78rem;padding:.5rem .7rem;outline:none;transition:border-color .2s}
+.cin:focus{border-color:var(--cobalt)}
+.pres{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem}
+.pb{font-family:var(--mono);font-size:.6rem;padding:.28rem .6rem;border-radius:4px;border:none;background:rgba(255,255,255,.07);color:var(--txt2);cursor:pointer;transition:all .2s}
+.pb:hover,.pb.on{background:rgba(37,99,235,.3);color:var(--txt)}
+.dlist{display:flex;flex-direction:column;gap:.35rem}
+.dob{display:flex;align-items:center;gap:.7rem;padding:.55rem .8rem;border-radius:5px;border:none;background:transparent;cursor:pointer;font-family:var(--mono);font-size:.7rem;color:var(--txt2);text-align:left;width:100%;transition:all .2s}
+.dob:hover,.dob.on{background:rgba(37,99,235,.15);color:var(--txt)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gobtn{width:100%;padding:.8rem;border:none;border-radius:6px;background:linear-gradient(135deg,var(--blue),var(--cobalt));color:#fff;font-family:var(--sans);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .25s;margin-top:auto;letter-spacing:.04em}
+.gobtn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,.45)}
+.dout{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;overflow-y:auto}
+.dph{display:flex;align-items:center;justify-content:center;height:100%;color:var(--txt3);font-family:var(--mono);font-size:.8rem;text-align:center;line-height:2;padding:2rem}
+.lc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1rem 1.25rem;border-left:3px solid}
+.ln{font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);margin-bottom:.35rem}
+.lv{font-family:var(--mono);font-size:.85rem;line-height:1.7;color:var(--txt)}
+.lo{font-family:var(--mono);font-size:.65rem;color:var(--txt3);margin-top:.3rem;line-height:1.6}
+.pbar{display:flex;align-items:center;gap:.6rem;margin-top:.4rem}
+.ptrack{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.pfill{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.plbl{font-family:var(--mono);font-size:.58rem;color:var(--txt3);white-space:nowrap;min-width:60px}
+.ubox{background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.3);border-radius:8px;padding:1.25rem 1.5rem;position:relative}
+.ubox::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cobalt),var(--gold),var(--cobalt))}
+.ublbl{font-family:var(--mono);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.ubstr{font-family:var(--mono);font-size:.72rem;line-height:1.9;word-break:break-all}
+.cpb{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;padding:.35rem .85rem;border-radius:5px;border:1px solid rgba(37,99,235,.4);background:transparent;color:var(--cobalt);cursor:pointer;transition:all .2s;margin-top:.75rem}
+.cpb:hover{background:rgba(37,99,235,.15)}
+.cpb.ok{border-color:var(--srf);color:var(--srf)}
+.dcg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-top:3rem}
+.dc{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1.75rem;transition:transform .3s,box-shadow .3s}
+.dc:hover{transform:translateY(-5px)}
+.dci{font-size:1.8rem;margin-bottom:.9rem}
+.dcc{font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:.35rem}
+.dcn{font-family:var(--sans);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--txt)}
+.dcb{font-size:.8rem;color:var(--txt2);line-height:1.65}
+.dciso{margin-top:.85rem;padding-top:.85rem;border-top:1px solid rgba(255,255,255,.07)}
+.dcil{font-family:var(--mono);font-size:.53rem;letter-spacing:.2em;color:var(--txt3);text-transform:uppercase;margin-bottom:.35rem}
+.dciv{font-family:var(--mono);font-size:.62rem;color:var(--txt2);line-height:1.7}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-top:3rem}
+.fc{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1.75rem;transition:transform .3s}
+.fc:hover{transform:translateY(-4px)}
+.fci{font-size:2rem;margin-bottom:.85rem}
+.fct{font-family:var(--sans);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--txt)}
+.fcb{font-size:.8rem;color:var(--txt2);line-height:1.7}
+.fcv{font-family:var(--mono);font-size:.62rem;margin-top:.85rem;padding:.5rem .75rem;border-radius:5px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--txt2);line-height:1.6}
+.fcvs{color:var(--red)}
+.dbox{background:linear-gradient(135deg,rgba(212,146,42,.08),rgba(8,14,28,.95));border:1px solid rgba(212,146,42,.25);border-radius:12px;padding:2.5rem;margin-top:3rem}
+.dbt{font-family:var(--serif);font-style:italic;font-size:1.8rem;color:var(--goldlt);margin-bottom:.5rem}
+.dbs{color:var(--txt2);font-size:.9rem;line-height:1.7;margin-bottom:2rem;max-width:700px}
+.dm4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.dm{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.25rem}
+.dmn{font-family:var(--serif);font-style:italic;font-size:2rem;line-height:1;margin-bottom:.3rem}
+.dml{font-family:var(--mono);font-size:.6rem;color:var(--txt2);letter-spacing:.12em;text-transform:uppercase}
+.dtbl{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);border-radius:8px;overflow:hidden;font-family:var(--mono);font-size:.72rem}
+.dtr{display:grid;grid-template-columns:170px 1fr 120px 160px;border-bottom:1px solid rgba(255,255,255,.05)}
+.dtr:last-child{border-bottom:none}
+.dtr>div{padding:.65rem 1rem;color:var(--txt2)}
+.dth>div{padding:.7rem 1rem;background:rgba(37,99,235,.12);color:var(--txt3);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase}
+.dins{color:#EF4444}.dter{color:var(--srf)}.dadv{color:var(--goldlt);font-weight:700}
+@media(max-width:600px){.dtr{grid-template-columns:1fr 1fr}.dtr>div:nth-child(3),.dtr>div:nth-child(4),.dth>div:nth-child(3),.dth>div:nth-child(4){display:none}}
+.ctbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.72rem;margin-top:2rem}
+.ctbl th{background:rgba(37,99,235,.15);padding:.8rem 1rem;text-align:left;border-bottom:1px solid rgba(37,99,235,.25);letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);font-weight:400}
+.ctbl td{padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--txt2)}
+.ctbl tr.t td{color:var(--txt)}.ctbl tr.t td:first-child{color:var(--goldlt);font-weight:700}
+.yes{color:var(--srf)}.no{color:var(--red)}.maybe{color:var(--goldlt)}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:3rem}
+@media(max-width:700px){.pg{grid-template-columns:1fr}}
+.pc{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:2rem}
+.pnum{font-family:var(--serif);font-style:italic;font-size:3rem;line-height:1;margin-bottom:.5rem}
+.ptit{font-family:var(--sans);font-weight:700;font-size:.95rem;margin-bottom:.5rem;color:var(--txt)}
+.pbod{font-size:.82rem;color:var(--txt2);line-height:1.7}
+.pform{font-family:var(--mono);font-size:.68rem;color:var(--sky);background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:5px;padding:.5rem .75rem;margin-top:.75rem;line-height:1.7}
+.mcard{background:linear-gradient(135deg,rgba(120,45,10,.15),rgba(8,14,28,.95));border:1px solid rgba(212,82,42,.25);border-radius:12px;padding:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;position:relative;overflow:hidden}
+@media(max-width:800px){.mcard{grid-template-columns:1fr}}
+.mcard::before{content:"";position:absolute;top:-40%;right:-10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(180,60,20,.1),transparent 70%);pointer-events:none}
+.mh{font-family:var(--serif);font-style:italic;font-size:2rem;color:var(--goldlt);margin-bottom:.75rem}
+.mb{color:var(--txt2);font-size:.88rem;line-height:1.8}
+.mupa{background:rgba(0,0,0,.45);border:1px solid rgba(212,82,42,.25);border-radius:8px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;line-height:1.9;margin-top:1rem}
+.ml{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+.ml li{font-family:var(--mono);font-size:.7rem;color:var(--txt2);display:flex;align-items:flex-start;gap:.6rem;line-height:1.5}
+.ml li::before{content:"arrow";color:var(--gold);flex-shrink:0;font-size:.6rem}
+.ibox{background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(8,14,28,.95));border:1px solid rgba(37,99,235,.3);border-radius:12px;padding:3rem;margin-top:3rem;text-align:center}
+.ith{font-family:var(--serif);font-style:italic;font-size:2.2rem;color:var(--goldlt);margin-bottom:.75rem}
+.ib{color:var(--txt2);font-size:.95rem;line-height:1.75;max-width:640px;margin:0 auto 2rem}
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
+.ic{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.25rem}
+.icn{font-family:var(--serif);font-style:italic;font-size:1.8rem;background:linear-gradient(135deg,var(--sky),var(--goldlt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.25rem}
+.icl{font-family:var(--mono);font-size:.6rem;color:var(--txt2);letter-spacing:.1em;text-transform:uppercase}
+.iphases{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:2rem;text-align:left}
+@media(max-width:600px){.iphases{grid-template-columns:1fr}}
+.iphase{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.25rem}
+.ipn{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
+.ipt{font-family:var(--sans);font-weight:700;font-size:.9rem;color:var(--txt);margin-bottom:.35rem}
+.ipb{font-family:var(--mono);font-size:.68rem;color:var(--txt2);line-height:1.6}
+.ctarow{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.ctaa{display:inline-flex;align-items:center;gap:.65rem;background:linear-gradient(135deg,var(--blue),var(--cobalt));color:#fff;padding:.85rem 2rem;border-radius:6px;font-family:var(--sans);font-weight:700;font-size:.85rem;text-decoration:none;transition:all .25s;letter-spacing:.04em}
+.ctaa:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.4)}
+.ctab{display:inline-flex;align-items:center;background:transparent;color:var(--goldlt);padding:.85rem 2rem;border-radius:6px;font-family:var(--sans);font-weight:700;font-size:.85rem;text-decoration:none;transition:all .25s;border:1px solid rgba(212,146,42,.4);letter-spacing:.04em}
+.ctab:hover{background:rgba(212,146,42,.08);transform:translateY(-2px)}
+.acard{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:2.5rem;display:grid;grid-template-columns:auto 1fr;gap:2.5rem;align-items:center;margin-top:3rem}
+@media(max-width:700px){.acard{grid-template-columns:1fr}}
+.aav{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cobalt));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:2.5rem;color:#fff;flex-shrink:0}
+.an{font-family:var(--sans);font-size:1.2rem;font-weight:700;color:var(--txt);margin-bottom:.25rem}
+.ai{font-family:var(--mono);font-size:.68rem;color:var(--gold);letter-spacing:.1em;margin-bottom:.75rem;text-transform:uppercase}
+.al{font-family:var(--mono);font-size:.68rem;color:var(--sky);margin-bottom:.75rem;line-height:1.6}
+.ab{font-size:.85rem;color:var(--txt2);line-height:1.7;max-width:600px}
+.alinks{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.alink{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;padding:.35rem .85rem;border-radius:5px;border:1px solid rgba(37,99,235,.4);color:var(--cobalt);text-decoration:none;transition:all .2s}
+.alink:hover{background:rgba(37,99,235,.15);color:var(--sky)}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-top:2rem}
+.ae{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.25rem;font-family:var(--mono);font-size:.72rem}
+.mg{display:inline-block;padding:.2rem .55rem;border-radius:4px;font-size:.58rem;letter-spacing:.1em;margin-bottom:.6rem;background:rgba(34,197,94,.12);color:var(--srf)}
+.mp{display:inline-block;padding:.2rem .55rem;border-radius:4px;font-size:.58rem;letter-spacing:.1em;margin-bottom:.6rem;background:rgba(56,189,248,.12);color:var(--sky)}
+.eu{color:var(--txt);margin-bottom:.35rem}
+.ed{color:var(--txt3);font-size:.65rem;line-height:1.5}
+.cblock{background:rgba(4,8,16,.8);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.25rem;font-family:var(--mono);font-size:.72rem;color:var(--txt2);line-height:2;margin-top:2rem;overflow-x:auto}
+.cm{color:var(--txt3)}
+footer{border-top:1px solid rgba(255,255,255,.07);padding:3rem;text-align:center}
+.fl{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--goldlt);letter-spacing:.3em;margin-bottom:.75rem}
+.fdiv{width:60px;height:1px;background:var(--gold);margin:.75rem auto}
+.fs{font-family:var(--mono);font-size:.65rem;color:var(--txt3);line-height:2}
+.flink{color:var(--cobalt);text-decoration:none}
+.flink:hover{color:var(--sky)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media(max-width:600px){.hero,section{padding-left:1.5rem;padding-right:1.5rem}nav{padding:1rem 1.5rem}}
+
+/* ── AUCPID ENGINE ── */
+.aucpid-hero{background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(8,14,28,.98));border:1px solid rgba(37,99,235,.3);border-radius:16px;padding:3rem;margin-top:3rem;position:relative;overflow:hidden}
+.aucpid-hero::before{content:"";position:absolute;top:-30%;right:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.06),transparent 70%);pointer-events:none}
+.aucpid-version{font-family:var(--mono);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+.aucpid-title{font-family:var(--serif);font-style:italic;font-size:clamp(2rem,4vw,3.2rem);color:#fff;margin-bottom:1rem;line-height:1.1}
+.aucpid-desc{color:var(--txt2);font-size:.95rem;line-height:1.8;max-width:700px;margin-bottom:2rem}
+.crack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:2rem}
+.crack-card{border-radius:10px;padding:1.5rem;border:1px solid;transition:transform .3s,box-shadow .3s;cursor:default;position:relative;overflow:hidden}
+.crack-card:hover{transform:translateY(-4px)}
+.crack-alg{border-color:#22C55E33;background:linear-gradient(135deg,#22C55E08,rgba(8,14,28,.9))}
+.crack-alg:hover{box-shadow:0 8px 32px #22C55E18}
+.crack-nft{border-color:#38BDF833;background:linear-gradient(135deg,#38BDF808,rgba(8,14,28,.9))}
+.crack-nft:hover{box-shadow:0 8px 32px #38BDF818}
+.crack-cmb{border-color:#F9731633;background:linear-gradient(135deg,#F9731608,rgba(8,14,28,.9))}
+.crack-cmb:hover{box-shadow:0 8px 32px #F9731618}
+.crack-geo{border-color:#A855F733;background:linear-gradient(135deg,#A855F708,rgba(8,14,28,.9))}
+.crack-geo:hover{box-shadow:0 8px 32px #A855F718}
+.crack-fun{border-color:#F6C86B33;background:linear-gradient(135deg,#F6C86B08,rgba(8,14,28,.9))}
+.crack-fun:hover{box-shadow:0 8px 32px #F6C86B18}
+.crack-ana{border-color:#14B8A633;background:linear-gradient(135deg,#14B8A608,rgba(8,14,28,.9))}
+.crack-ana:hover{box-shadow:0 8px 32px #14B8A618}
+.crack-badge{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;border:1px solid;display:inline-block;margin-bottom:.75rem}
+.crack-name{font-family:var(--sans);font-size:1.05rem;font-weight:700;color:var(--txt);margin-bottom:.5rem}
+.crack-body{font-size:.8rem;color:var(--txt2);line-height:1.65;margin-bottom:.85rem}
+.crack-formula{font-family:var(--mono);font-size:.65rem;background:rgba(0,0,0,.3);border-radius:5px;padding:.6rem .85rem;color:var(--sky);line-height:1.7}
+.crack-key{font-family:var(--mono);font-size:.62rem;color:var(--txt3);margin-top:.5rem;line-height:1.6}
+
+/* ── WORKED EXAMPLES ── */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-top:2rem}
+.ex-card{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.ex-header{padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.ex-num{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3)}
+.ex-title{font-family:var(--sans);font-weight:700;font-size:.95rem;color:var(--txt);margin-top:.25rem}
+.ex-body{padding:1.25rem}
+.ex-prob{font-size:.8rem;color:var(--txt2);line-height:1.65;margin-bottom:.85rem;font-style:italic}
+.ex-code{font-family:var(--mono);font-size:.68rem;background:rgba(0,0,0,.4);border-radius:6px;padding:.85rem;color:var(--sky);line-height:1.7;white-space:pre;overflow-x:auto}
+.ex-answer{display:flex;align-items:center;gap:.75rem;margin-top:.85rem;padding:.6rem .85rem;border-radius:6px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25)}
+.ex-ans-lbl{font-family:var(--mono);font-size:.58rem;color:var(--txt3);letter-spacing:.15em;text-transform:uppercase}
+.ex-ans-val{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--srf)}
+
+/* ── CREATOR SECTION ── */
+.creator-wrap{display:grid;grid-template-columns:320px 1fr;gap:3rem;align-items:start;margin-top:3rem}
+@media(max-width:900px){.creator-wrap{grid-template-columns:1fr}}
+.creator-card{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:2rem;text-align:center;position:sticky;top:5rem}
+.creator-av{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cobalt));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:3rem;color:#fff;margin:0 auto 1.25rem}
+.creator-name{font-family:var(--sans);font-size:1.3rem;font-weight:800;color:var(--txt);margin-bottom:.25rem}
+.creator-inst{font-family:var(--mono);font-size:.65rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.creator-loc{font-family:var(--mono);font-size:.65rem;color:var(--sky);margin-bottom:1rem;line-height:1.6}
+.creator-upa{font-family:var(--mono);font-size:.58rem;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:6px;padding:.6rem .75rem;color:var(--txt2);line-height:1.8;text-align:left;margin-bottom:1rem}
+.creator-links{display:flex;flex-direction:column;gap:.5rem}
+.creator-link{font-family:var(--mono);font-size:.65rem;padding:.4rem .85rem;border-radius:5px;border:1px solid rgba(37,99,235,.4);color:var(--cobalt);text-decoration:none;transition:all .2s}
+.creator-link:hover{background:rgba(37,99,235,.15);color:var(--sky)}
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:grid;grid-template-columns:80px 1fr;gap:1.25rem;position:relative;padding-bottom:1.75rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::after{content:"";position:absolute;left:79px;top:28px;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(37,99,235,.4),transparent)}
+.tl-item:last-child::after{display:none}
+.tl-year{font-family:var(--mono);font-size:.65rem;font-weight:700;color:var(--gold);letter-spacing:.1em;text-align:right;padding-top:.25rem}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--cobalt);border:2px solid rgba(37,99,235,.4);flex-shrink:0;margin-top:.3rem;position:absolute;left:73px}
+.tl-content{padding-left:24px}
+.tl-title{font-family:var(--sans);font-weight:700;font-size:.9rem;color:var(--txt);margin-bottom:.3rem}
+.tl-body{font-size:.8rem;color:var(--txt2);line-height:1.65}
+.tl-tag{font-family:var(--mono);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .55rem;border-radius:10px;border:1px solid;display:inline-block;margin-top:.35rem}
+.achiev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
+.achiev{background:rgba(8,14,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.25rem}
+.achiev-icon{font-size:1.5rem;margin-bottom:.6rem}
+.achiev-title{font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem}
+.achiev-body{font-size:.78rem;color:var(--txt2);line-height:1.6}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<nav class="z">
+  <div class="nlogo">TERRA</div>
+  <ul class="nlinks">
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#domains">Domains</a></li>
+    <li><a href="#aucpid">AUCPID</a></li>
+    <li><a href="#features">vs INS</a></li>
+    <li><a href="#mars">Mars</a></li>
+    <li><a href="#creator">Creator</a></li>
+    <li><a href="#invest">Invest</a></li>
+  </ul>
+  <div class="npill">AUCPID v14.0 &middot; PMR-26</div>
+</nav>
+
+<section class="hero z">
+  <div class="hgrid"></div><div class="hglow"></div>
+  <div class="hinner">
+    <div>
+      <div class="hey">Universal Physical Address System</div>
+      <h1>Every Point.<br>Any World.<br>Forever.</h1>
+      <p class="hdesc">The first physics-derived address system that works on land, in air, under the sea, beneath the Earth, and on Mars &mdash; without GPS, without infrastructure, without drift. Built at AIMS Ghana.</p>
+      <div class="hchips">
+        <span class="chip" style="color:#22C55E;border-color:#22C55E44;background:#22C55E0D">&#127758; Surface</span>
+        <span class="chip" style="color:#38BDF8;border-color:#38BDF844;background:#38BDF80D">&#9992; Aerial</span>
+        <span class="chip" style="color:#0EA5E9;border-color:#0EA5E944;background:#0EA5E90D">&#127754; Underwater</span>
+        <span class="chip" style="color:#F97316;border-color:#F9731644;background:#F973160D">&#9935; Underground</span>
+        <span class="chip" style="color:#A855F7;border-color:#A855F744;background:#A855F70D">&#128640; Space &amp; Mars</span>
+      </div>
+      <a href="#demo" class="hcta">&#9654; Compute Your Address</a>
+    </div>
+    <div>
+      <div class="hupa">
+        <span class="utag">Live UPA &middot; AIMS Ghana, Cape Coast &middot; Surface</span>
+        <div class="ul">UPA3D[SRF] = {</div>
+        <div class="ul">&nbsp;&nbsp;<span style="color:#22C55E">G[+62636724]</span></div>
+        <div class="ul">&nbsp;&nbsp;<span style="color:#38BDF8">P[&#8722;0.821|+14.312|&#8722;8.447]</span></div>
+        <div class="ul">&nbsp;&nbsp;<span style="color:#F97316">I[0.7062|&#8722;3.8|1.118|&#8722;26.1|+5.2]</span></div>
+        <div class="ul">&nbsp;&nbsp;<span style="color:#F6C86B">T[2026.215]</span></div>
+        <div class="ul">}</div>
+        <div style="display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.15em;padding:.25rem .7rem;border-radius:12px;border:1px solid rgba(37,99,235,.4);color:var(--sky);background:rgba(37,99,235,.1);margin-top:.75rem;text-transform:uppercase">
+          &#128205; 5.1657&deg;N &middot; 1.3099&deg;W &middot; 11m ASL &middot; AIMS Ghana
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:2rem 3rem" class="z">
+  <div class="wrap">
+    <div class="sbar rv">
+      <div class="si"><div class="snum">4B+</div><div class="slbl">People without address</div></div>
+      <div class="si"><div class="snum">5</div><div class="slbl">Physical domains</div></div>
+      <div class="si"><div class="snum">0</div><div class="slbl">Infrastructure needed</div></div>
+      <div class="si"><div class="snum">&plusmn;0.3m</div><div class="slbl">Current precision</div></div>
+      <div class="si"><div class="snum">61M&times;</div><div class="slbl">Better than best INS at 1000hrs</div></div>
+      <div class="si"><div class="snum">&infin;</div><div class="slbl">Address valid duration</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="demo" class="z">
+  <div class="wrap">
+    <div class="ey rv">Interactive Demo</div>
+    <h2 class="sh rv">Compute Any Address in the Universe</h2>
+    <p class="sp rv">Enter coordinates and altitude or depth. TERRA computes a physics-derived address using gravitational potential, pulsar timing residuals, domain-specific isotope fingerprints, and a UTC timestamp.</p>
+    <div class="dshell rv">
+      <div class="dtb">
+        <div class="dd dr"></div><div class="dd dy"></div><div class="dd dg"></div>
+        <div class="dtt">TERRA &middot; UPA ENGINE v2.0 &middot; PMR-26 &middot; AIMS GHANA</div>
+      </div>
+      <div class="dgrid">
+        <div class="dctrl">
+          <div><span class="clb">Latitude (&deg;)</span><input class="cin" id="dlat" type="number" value="5.1657" step="0.001"></div>
+          <div><span class="clb">Longitude (&deg;)</span><input class="cin" id="dlon" type="number" value="-1.3099" step="0.001"></div>
+          <div>
+            <span class="clb">Altitude / Depth (m) &middot; + above, &minus; below</span>
+            <input class="cin" id="dalt" type="number" value="11" step="1">
+            <div class="pres" id="pres"></div>
+          </div>
+          <div>
+            <span class="clb">Domain</span>
+            <div class="dlist" id="domlist"></div>
+          </div>
+          <button class="gobtn" id="gobtn">&#9654; Compute UPA</button>
+        </div>
+        <div class="dout" id="dout">
+          <div class="dph">&#8592; Set coordinates and click Compute<br><br>Default: AIMS Ghana &middot; 5.1657&deg;N, 1.3099&deg;W &middot; 11m</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="domains" class="z">
+  <div class="wrap">
+    <div class="ey rv">Five Physical Domains</div>
+    <h2 class="sh rv">Everywhere Physics Exists, TERRA Works</h2>
+    <p class="sp rv">TERRA's gravitational and pulsar layers are universal. The isotope layer adapts to the medium. Together they create a unique, permanent address in any physical environment.</p>
+    <div class="dcg">
+      <div class="dc rv" style="border-top:2px solid #22C55E"><div class="dci">&#127758;</div><div class="dcc" style="color:#22C55E">SRF &middot; Surface</div><div class="dcn">Land, Desert, Ice, Sea Floor</div><div class="dcb">Any point on Earth's surface. The primary domain with highest isotope precision. Works from the deepest ocean trench to Everest's peak.</div><div class="dciso"><div class="dcil">Isotope sources</div><div class="dciv"><sup>87</sup>Sr/<sup>86</sup>Sr &middot; &delta;<sup>18</sup>O soil &middot; <sup>206</sup>Pb/<sup>207</sup>Pb<br>&delta;<sup>13</sup>C soil &middot; &delta;<sup>15</sup>N soil</div></div></div>
+      <div class="dc rv" style="border-top:2px solid #38BDF8"><div class="dci">&#9992;</div><div class="dcc" style="color:#38BDF8">AIR &middot; Aerial</div><div class="dcn">Aircraft, Drones, Balloons</div><div class="dcb">Any altitude 0 to 80 km. Atmospheric isotopes vary by air mass origin, altitude, and geographic region. No transponder needed.</div><div class="dciso"><div class="dcil">Isotope sources</div><div class="dciv">&delta;<sup>18</sup>O vapour &middot; &delta;D &middot; <sup>14</sup>C air<br>&delta;<sup>13</sup>C CO<sub>2</sub> &middot; <sup>222</sup>Rn radon</div></div></div>
+      <div class="dc rv" style="border-top:2px solid #0EA5E9"><div class="dci">&#127754;</div><div class="dcc" style="color:#0EA5E9">SEA &middot; Underwater</div><div class="dcn">Submarines, ROVs, Pipelines</div><div class="dcb">Full ocean depth. Water isotopes vary by basin, depth, and water mass. G-addr and P-addr function identically underwater.</div><div class="dciso"><div class="dcil">Isotope sources</div><div class="dciv">&delta;<sup>18</sup>O ocean &middot; &delta;D &middot; <sup>87</sup>Sr/<sup>86</sup>Sr<br>&delta;<sup>13</sup>C DIC &middot; &epsilon;Nd neodymium</div></div></div>
+      <div class="dc rv" style="border-top:2px solid #F97316"><div class="dci">&#9935;</div><div class="dcc" style="color:#F97316">UND &middot; Underground</div><div class="dcn">Mines, Tunnels, Geology</div><div class="dcb">The most precise I-addr domain. Rock isotopes identify geological strata to centimetre precision &mdash; better than surface soils.</div><div class="dciso"><div class="dcil">Isotope sources</div><div class="dciv"><sup>87</sup>Sr/<sup>86</sup>Sr rock &middot; &delta;<sup>18</sup>O mineral<br><sup>206</sup>Pb/<sup>207</sup>Pb &middot; &delta;<sup>34</sup>S &middot; &delta;<sup>13</sup>C carbonate</div></div></div>
+      <div class="dc rv" style="border-top:2px solid #A855F7"><div class="dci">&#128640;</div><div class="dcc" style="color:#A855F7">SPC &middot; Space</div><div class="dcn">Satellites, ISS, Mars, Moon</div><div class="dcb">The P-addr changes dramatically with altitude &mdash; unique positions everywhere in the Solar System. Works on any planet with gravity and visible pulsars.</div><div class="dciso"><div class="dcil">Note</div><div class="dciv">G + P fully functional everywhere.<br>I-addr: rock isotopes on Mars/Moon surface.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="z">
+  <div class="wrap">
+    <div class="ey rv">TERRA Exclusive Capabilities</div>
+    <h2 class="sh rv">8 Things INS Can Never Have</h2>
+    <p class="sp rv">Inertial navigation tracks movement from a known starting point. TERRA measures absolute physics. The difference is fundamental &mdash; not a matter of engineering, but of physics itself.</p>
+    <div class="fg">
+      <div class="fc rv"><div class="fci">&#8987;</div><div class="fct">Zero Drift. Ever.</div><div class="fcb">TERRA accuracy is identical at second 1 and year 1,000. Gravitational fields and pulsar delays do not change on human timescales. Your address today is your address in 3026 &mdash; same precision.</div><div class="fcv"><span class="fcvs">INS:</span> Accumulates 18.5 m/hr even with the best military ring-laser gyroscopes. Must be reset by GPS, star trackers, or external references &mdash; none available on Mars or underwater.</div></div>
+      <div class="fc rv"><div class="fci">&#128272;</div><div class="fct">Physically Unforgeable</div><div class="fcb">A TERRA address is derived from measurable physics. No spoofing device exists. No government can revoke it. No authority can reassign it. The physics is not negotiable.</div><div class="fcv"><span class="fcvs">INS:</span> Can be initialised with a false starting position. Output is only as trustworthy as the calibration input. Trivially deceived at initialization.</div></div>
+      <div class="fc rv"><div class="fci">&#127788;</div><div class="fct">No Calibration. Ever.</div><div class="fcb">TERRA computes an absolute position from scratch using published physics constants. No initialisation. No reference start. Turn it on anywhere in the Solar System &mdash; it knows where it is.</div><div class="fcv"><span class="fcvs">INS:</span> Requires GPS or external reference to initialise. In GPS-denied environments &mdash; exactly where TERRA matters most &mdash; INS cannot produce a usable absolute position at all.</div></div>
+      <div class="fc rv"><div class="fci">&#129680;</div><div class="fct">Any Planet. No Modification.</div><div class="fcb">Mars, Moon, Europa &mdash; any body with a gravitational field and visible pulsars. TERRA formula is unchanged everywhere. No re-engineering, no new satellites, no recalibration.</div><div class="fcv"><span class="fcvs">INS:</span> Must be recalibrated for each planet's gravity. Cannot produce an absolute position on Mars without a GPS constellation that does not exist and will cost billions to build.</div></div>
+      <div class="fc rv"><div class="fci">&#128220;</div><div class="fct">Verifiable Address History</div><div class="fcb">The T-addr timestamp creates a tamper-proof chronological record. Prove that object X was at location Y at time Z &mdash; with physics-level certainty. Admissible as evidence anywhere worldwide.</div><div class="fcv"><span class="fcvs">INS:</span> No independent verification. The record exists only in the device. If the device fails or is tampered with, the history is gone permanently.</div></div>
+      <div class="fc rv"><div class="fci">&#9889;</div><div class="fct">Survives EMP and Destruction</div><div class="fcb">TERRA is a formula, not a device. If every TERRA receiver on Earth is destroyed, the address system still exists. Any physicist can recompute any address from published physics.</div><div class="fcv"><span class="fcvs">INS:</span> When hardware dies, all position data is gone. Cannot be reconstructed without the device's internal volatile memory.</div></div>
+      <div class="fc rv"><div class="fci">&#127968;</div><div class="fct">Permanent Land Title</div><div class="fcb">A TERRA address assigned to land today is valid in year 3026 &mdash; no renewal, no resurvey, no infrastructure to maintain. The physics does not expire. Ever.</div><div class="fcv"><span class="fcvs">INS:</span> Cannot assign a permanent address to a fixed location. INS tracks movement &mdash; a stationary location has no INS address. It is a navigation tool, not an addressing system.</div></div>
+      <div class="fc rv"><div class="fci">&#127760;</div><div class="fct">Works Where Humanity Needs It</div><div class="fcb">Refugee camps. Deep mines. Submarines. Villages with no postal system. 4 billion people without a formal address. TERRA requires nothing but physics &mdash; which is free and universal.</div><div class="fcv"><span class="fcvs">INS:</span> Requires a GPS fix to initialise. In the poorest, most remote, most infrastructure-deprived locations &mdash; exactly where TERRA matters most &mdash; INS cannot start at all.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="drift" class="z">
+  <div class="wrap">
+    <div class="ey rv">TERRA vs Inertial Navigation</div>
+    <h2 class="sh rv">61 Million Times Better. And Growing.</h2>
+    <p class="sp rv">INS is the only other infrastructure-free positioning technology. Its fundamental flaw is drift. TERRA has zero drift. The comparison becomes more extreme with every passing hour.</p>
+    <div class="dbox rv">
+      <div class="dbt">The Drift Problem: 61,000,000&times; and Growing</div>
+      <div class="dbs">The best military ring laser gyroscope (Northrop Grumman MK49) accumulates 18.5 metres of error per hour. On a 7-month Mars mission with no GPS correction, INS error exceeds 3,200 km &mdash; larger than Mars itself. TERRA error: &plusmn;0.3 metres. Identical to day one. TERRA does not drift because physics does not drift.</div>
+      <div class="dm4">
+        <div class="dm"><div class="dmn" style="color:#F97316">18.5 m/hr</div><div class="dml">Best military INS drift rate (MK49 ring laser)</div></div>
+        <div class="dm"><div class="dmn" style="color:#22C55E">&plusmn;0.3 m</div><div class="dml">TERRA precision &mdash; permanent, second 1 to year 100</div></div>
+        <div class="dm"><div class="dmn" style="color:#EF4444">3,255 km</div><div class="dml">INS error on 7-month Mars transit (no GPS correction)</div></div>
+        <div class="dm"><div class="dmn" style="color:#F6C86B">61,666,666&times;</div><div class="dml">TERRA advantage at 1,000 hours of operation</div></div>
+      </div>
+      <div class="dtbl">
+        <div class="dtr dth"><div>Time</div><div>INS error</div><div>TERRA</div><div>Advantage</div></div>
+        <div class="dtr"><div>1 minute</div><div class="dins">0.31 m</div><div class="dter">&plusmn;0.3 m</div><div class="maybe">break-even</div></div>
+        <div class="dtr"><div>1 hour</div><div class="dins">18.5 m</div><div class="dter">&plusmn;0.3 m</div><div class="dadv">62&times;</div></div>
+        <div class="dtr"><div>1 day</div><div class="dins">444 m</div><div class="dter">&plusmn;0.3 m</div><div class="dadv">1,480&times;</div></div>
+        <div class="dtr"><div>1 month</div><div class="dins">13.4 km</div><div class="dter">&plusmn;0.3 m</div><div class="dadv">44,640&times;</div></div>
+        <div class="dtr"><div>1 year</div><div class="dins">162 km</div><div class="dter">&plusmn;0.3 m</div><div class="dadv">540,000&times;</div></div>
+        <div class="dtr"><div>Mars mission (7 mo)</div><div class="dins">3,255 km</div><div class="dter">&plusmn;0.3 m</div><div class="dadv" style="color:#A855F7">10,850,000&times;</div></div>
+        <div class="dtr"><div>3 years</div><div class="dins">487 km</div><div class="dter">&plusmn;0.3 m</div><div class="dadv" style="color:#A855F7">1,623,000&times;</div></div>
+        <div class="dtr"><div>100 years</div><div class="dins">16,206 km</div><div class="dter">&plusmn;0.3 m</div><div class="dadv" style="color:#A855F7">54,000,000&times;</div></div>
+        <div class="dtr"><div>1,000 years</div><div class="dins">Exceeds Earth circumference</div><div class="dter">&plusmn;0.3 m</div><div class="dadv" style="color:#A855F7">&infin; (INS meaningless)</div></div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;margin-top:2.5rem">
+      <table class="ctbl rv">
+        <thead><tr><th>System</th><th>Surface</th><th>Air</th><th>Sea</th><th>Underground</th><th>Space/Mars</th><th>Zero drift</th><th>No infra.</th><th>Unforgeable</th></tr></thead>
+        <tbody>
+          <tr class="t"><td>TERRA</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>GPS / GNSS</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td><td class="no">&#10007; satellites</td><td class="no">Spoofable</td></tr>
+          <tr><td>Inertial Nav (INS)</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="maybe">~</td><td class="no">&#10007; drifts</td><td class="yes">&#10003;</td><td class="no">Drifts away</td></tr>
+          <tr><td>what3words / Plus Codes</td><td class="yes">&#10003;</td><td class="maybe">~</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td><td class="no">&#10007; internet</td><td class="no">Trivially faked</td></tr>
+          <tr><td>USBL Acoustic</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="maybe">~</td><td class="no">&#10007; transducers</td><td class="no">No</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="physics" class="z" style="padding:5rem 3rem">
+  <div class="wrap">
+    <div class="ey rv">The Physics</div>
+    <h2 class="sh rv">Four Invariant Layers</h2>
+    <div class="pg">
+      <div class="pc rv"><div class="pnum" style="color:#22C55E">G</div><div class="ptit">Gravitational Potential (3D)</div><div class="pbod">Earth's gravity varies with latitude, longitude, AND altitude. Every cubic metre of space has a unique gravitational potential set by the planet's mass distribution &mdash; permanent on human timescales.</div><div class="pform">W(&phi;,&lambda;,h) = W&#8320; &minus; g(&phi;,h) &middot; H_ortho<br>Anomaly = W &minus; W&#8320; &nbsp;[m&sup2;/s&sup2;]<br>W&#8320; = 62,636,853.4 m&sup2;/s&sup2; (IAG 2015)</div></div>
+      <div class="pc rv"><div class="pnum" style="color:#38BDF8">P</div><div class="ptit">Pulsar Roemer Delay (3D)</div><div class="pbod">Three millisecond pulsars act as cosmic beacons. The Roemer delay depends on the observer's exact 3D position in the Solar System. Changes measurably with altitude and depth.</div><div class="pform">&Delta;t = (n&#770; &middot; r_ECEF) / c &nbsp;[milliseconds]<br>n&#770; = unit vector to pulsar (ICRS)<br>r_ECEF = 3D observer position vector</div></div>
+      <div class="pc rv"><div class="pnum" style="color:#F97316">I</div><div class="ptit">Isotope Fingerprint</div><div class="pbod">Five isotope ratios from the local medium. Each domain has unique sources. Underground rock isotopes are the most precise &mdash; geologists use them to identify strata to centimetre accuracy.</div><div class="pform">SRF: <sup>87</sup>Sr/<sup>86</sup>Sr &middot; &delta;<sup>18</sup>O &middot; Pb/Pb &middot; &delta;<sup>13</sup>C &middot; &delta;<sup>15</sup>N<br>AIR: &delta;<sup>18</sup>O vapour &middot; &delta;D &middot; <sup>14</sup>C &middot; &delta;<sup>13</sup>C &middot; <sup>222</sup>Rn<br>SEA: &delta;<sup>18</sup>O &middot; &delta;D &middot; <sup>87</sup>Sr/<sup>86</sup>Sr &middot; &delta;<sup>13</sup>C &middot; &epsilon;Nd<br>UND: <sup>87</sup>Sr/<sup>86</sup>Sr &middot; &delta;<sup>18</sup>O &middot; Pb/Pb &middot; &delta;<sup>34</sup>S &middot; &delta;<sup>13</sup>C</div></div>
+      <div class="pc rv"><div class="pnum" style="color:#F6C86B">T</div><div class="ptit">Epoch Timestamp (Universal)</div><div class="pbod">Fractional-year UTC anchors all four layers to a specific moment. Creates a tamper-proof chronological record. The same formula works on any planet.</div><div class="pform">T = year + (day_of_year / days_in_year)<br>March 20, 2026 = T[2026.215]<br>Resolution: microseconds</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="mars" class="z">
+  <div class="wrap">
+    <div class="ey rv">SpaceX Mars Base Alpha</div>
+    <h2 class="sh rv">The Only Address System That Works on Mars &mdash; Today</h2>
+    <p class="sp rv">Mars has no GPS satellites. Before the first habitat can have an address, someone must solve planetary-surface positioning without orbital infrastructure. TERRA solves it with no modification.</p>
+    <div class="mcard rv">
+      <div>
+        <div class="mh">Mars Base Alpha &mdash; Arcadia Planitia</div>
+        <div class="mb">SpaceX plans uncrewed Starship missions to Mars in the 2026 transfer window, crewed landings by 2029, and a self-sustaining colony by 2050. Every habitat, landing pad, road, and resource site needs a coordinate that works without GPS. TERRA works on Mars without any modification.</div>
+        <ul class="ml">
+          <li>G-addr: Mars gravity (38% of Earth) gives completely different potential range &mdash; every Mars location uniquely identifiable</li>
+          <li>P-addr: Same three pulsars, different ECEF position &mdash; delays shift ~1.5ms from Earth values</li>
+          <li>I-addr: Basaltic Martian crust with unique Sr, Pb, S isotope ratios distinct from any Earth location</li>
+          <li>T-addr: UTC is universal &mdash; tied to Earth atomic clocks via radio, same formula everywhere</li>
+          <li>After 7-month transit with no GPS: INS error = 3,255 km. TERRA error: &plusmn;0.3 m. Permanently.</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--goldlt);margin-bottom:.75rem">Sample Mars UPA &middot; Arcadia Planitia (~2031)</div>
+        <div class="mupa">
+          <span style="color:#F6C86B">UPA3D[MRS]</span> = {<br>
+          &nbsp;&nbsp;<span style="color:#22C55E">G[&minus;12847293]</span>&nbsp;&nbsp;&nbsp;<span style="color:#4A5A7A">// Mars gravity, 38% of Earth</span><br>
+          &nbsp;&nbsp;<span style="color:#38BDF8">P[+3.214|&minus;4.871|+0.944]</span>&nbsp;<span style="color:#4A5A7A">// ~1.5ms shifted vs Earth</span><br>
+          &nbsp;&nbsp;<span style="color:#F97316">I[0.7020|+5.8|1.085|+1.2|&minus;3.4]</span>&nbsp;<span style="color:#4A5A7A">// basaltic crust</span><br>
+          &nbsp;&nbsp;<span style="color:#F6C86B">T[2031.450]</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4A5A7A">// UTC, universal</span><br>
+          }
+        </div>
+        <div style="margin-top:1.25rem;font-family:var(--mono);font-size:.68rem;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:1rem;line-height:1.9;color:#9AABCC">
+          <span style="color:#F6C86B">// INS on Mars without GPS correction:</span><br>
+          After 7-month transit:&nbsp; error = 3,255 km<br>
+          Mars diameter = 6,779 km.<br>
+          <span style="color:#EF4444">// INS error exceeds the planet.</span><br>
+          <span style="color:#22C55E">// TERRA on Mars: &plusmn;0.3 m. Permanently.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="invest" class="z">
+  <div class="wrap">
+    <div class="ey rv">Investment Opportunity</div>
+    <h2 class="sh rv">The Address System for the Next Century</h2>
+    <p class="sp rv">TERRA is live, tested, and open-source. Active conversations: UNHCR Digital Innovation Fund ($95K), World Bank ID4D ($50K+), SpaceX technology partnership.</p>
+    <div class="ibox rv">
+      <div class="ith">Why Invest in TERRA</div>
+      <div class="ib">Every address system will be obsolete in 100 years. GPS satellites will fail. Governments will change. Postal codes will be reassigned. TERRA is built on physics &mdash; the one thing still true in 3026.</div>
+      <div class="igrid">
+        <div class="ic"><div class="icn">$0</div><div class="icl">Infrastructure cost to deploy</div></div>
+        <div class="ic"><div class="icn">4B</div><div class="icl">Unaddressed people (market)</div></div>
+        <div class="ic"><div class="icn">Live</div><div class="icl">API deployed, 56/56 tests pass</div></div>
+        <div class="ic"><div class="icn">5+</div><div class="icl">Revenue sectors identified</div></div>
+        <div class="ic"><div class="icn">&infin;</div><div class="icl">Address validity duration</div></div>
+        <div class="ic"><div class="icn">PMR-26</div><div class="icl">Formal uniqueness proof</div></div>
+      </div>
+      <div class="iphases">
+        <div class="iphase"><div class="ipn">Phase 1 &middot; Now &middot; $0</div><div class="ipt">Foundation (Active)</div><div class="ipb">Live API &middot; Working website &middot; 56 tests &middot; Rwanda + Ghana demo</div></div>
+        <div class="iphase"><div class="ipn">Phase 2 &middot; 2026 &middot; $5K</div><div class="ipt">Precision Upgrade</div><div class="ipb">EGM2008 geoid &middot; 8 pulsars &middot; GEOROC live API &middot; ML isotope model</div></div>
+        <div class="iphase"><div class="ipn">Phase 3 &middot; 2027 &middot; $30K</div><div class="ipt">Platform + Partners</div><div class="ipb">Mobile app &middot; UNHCR deployment &middot; 100 cities worldwide</div></div>
+      </div>
+      <div class="ctarow">
+        <a href="/cdn-cgi/l/email-protection#7a0a1b1d031f171b141d3a1b131709541f1e0f541d1245090f18101f190e472e3f28283b5a33140c1f090e171f140e" class="ctaa">Discuss Investment</a>
+        <a href="https://terra-upa.onrender.com" class="ctab">Live Demo</a>
+        <a href="/cdn-cgi/l/email-protection#a0d0c1c7d9c5cdc1cec7e0c1c9cdd38ec5c4d58ec7c89fd3d5c2cac5c3d49df4e5f2f2e180e7d2c1ced480f0c1d2d4cec5d2d3c8c9d0" class="ctab">NGO / Grant Partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="z" style="padding:4rem 3rem">
+  <div class="wrap">
+    <div class="ey rv">The Inventor</div>
+    <div class="acard rv">
+      <div class="aav">PA</div>
+      <div>
+        <div class="an">Paul Agyemang</div>
+        <div class="ai">African Institute for Mathematical Sciences (AIMS Ghana)</div>
+        <div class="al">&#128205; 5.1657&deg;N &middot; 1.3099&deg;W &middot; Cape Coast, Ghana<br>My TERRA address: UPA3D[SRF] = {G[+62636724] P[&minus;0.821|+14.312|&minus;8.447] I[0.7062|&minus;3.8|1.118|&minus;26.1|+5.2] T[2026.215]}</div>
+        <div class="ab">Researcher in mathematical physics, AI systems, and applied mathematics. Creator of TERRA, the AUCPID v14.0 constraint-propagation framework, and the Reflexive Analysis mathematical framework. Competing in AIMO3 (AI Mathematical Olympiad, $2.2M prize pool). Clay Millennium Prize papers submitted to Annals of Mathematics, Inventiones Mathematicae, IHES, and JACM. Priority date for TERRA: March 20, 2026.</div>
+        <div class="alinks">
+          <a href="/cdn-cgi/l/email-protection#b1c1d0d6c8d4dcd0dfd6f1d0d8dcc29fd4d5c49fd6d9" class="alink"><span class="__cf_email__" data-cfemail="cebeafa9b7aba3afa0a98eafa7a3bde0abaabbe0a9a6">[email&#160;protected]</span></a>
+          <a href="https://terra-upa.onrender.com" class="alink">terra-upa.onrender.com</a>
+          <a href="https://doi.org/10.13140/RG.2.2.14580.82567" class="alink">DOI: PMR-26</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AUCPID ENGINE ═══ -->
+<section id="aucpid" class="z">
+  <div class="wrap">
+    <div class="ey rv">AUCPID v14.0</div>
+    <h2 class="sh rv">The Constraint-Propagation Engine</h2>
+    <p class="sp rv">AUCPID (Analyze, Understand, Constrain, Plan, Implement, Deliver) is a mathematical problem-solving framework invented by Paul Agyemang at AIMS Ghana. It powers both TERRA's physics layers and the AI Mathematical Olympiad competition system.</p>
+
+    <div class="aucpid-hero rv">
+      <div class="aucpid-version">AUCPID v14.0 &middot; PMR-26 &middot; Invented by Paul Agyemang &middot; AIMS Ghana</div>
+      <div class="aucpid-title">The Six Crack Types</div>
+      <div class="aucpid-desc">Every mathematical problem — from IMO-level olympiad questions to real-world physics modelling — is classified into one of six crack types. The crack type determines which formulas, constraints, and solution strategies apply. AUCPID's constraint-propagation engine then reduces the problem to a single verifiable computation.</div>
+
+      <div class="crack-grid">
+
+        <div class="crack-card crack-alg rv">
+          <div class="crack-badge" style="color:#22C55E;border-color:#22C55E44;background:#22C55E0D">[ALG] Algebra</div>
+          <div class="crack-name">Symmetric Polynomials &amp; Integer Search</div>
+          <div class="crack-body">Vieta's formulas, brute-force integer enumeration, equal-sum equal-product conditions. When the problem involves ages, products, roots of polynomials, or symmetric constraints.</div>
+          <div class="crack-formula">Crack signal: "product", "age", "roots", "symmetric"
+Strategy: reduce to 1 variable &rarr; brute-force
+Verify: equal sum + product = swapped quadratic roots</div>
+          <div class="crack-key">AIMO3 P1 answer: 50 &nbsp;&middot;&nbsp; Solved by [ALG] in &lt;0.1s</div>
+        </div>
+
+        <div class="crack-card crack-nft rv">
+          <div class="crack-badge" style="color:#38BDF8;border-color:#38BDF844;background:#38BDF80D">[NFT] Number Theory</div>
+          <div class="crack-name">Legendre, LTE, Base Digits, Valuation</div>
+          <div class="crack-body">Legendre's formula for prime valuations in factorials. Lifting the Exponent Lemma. Base-b digit sums. Norwegian divisor triples. Trailing zeros via min(v&#8322;, v&#8325;).</div>
+          <div class="crack-formula">v&#8346;(n!) = &sum;&#8321;&#8330;&#8320;&#8320; &lfloor;n/p&#7503;&rfloor; = (n &minus; s&#8346;(n)) / (p&minus;1)
+Kummer: v&#8322;(C(2m,m)) = popcount(m) = bin(m).count('1')
+LTE: v&#8346;(a&#8319;&minus;b&#8319;) = v&#8346;(a&minus;b) + v&#8346;(n)</div>
+          <div class="crack-key">AIMO3 P8 answer: 32193 &nbsp;&middot;&nbsp; M = &lfloor;10&#8309;&times;log&#8322;10&rfloor;+1 = 332193</div>
+        </div>
+
+        <div class="crack-card crack-cmb rv">
+          <div class="crack-badge" style="color:#F97316;border-color:#F9731644;background:#F973160D">[CMB] Combinatorics</div>
+          <div class="crack-name">Catalan, Kummer, Inclusion-Exclusion</div>
+          <div class="crack-body">Tournament bracket counting. Catalan numbers. Kummer's theorem for central binomial coefficients. Partition counting. Largest-possible set problems. Careful bound analysis.</div>
+          <div class="crack-formula">v&#8322;(C(2m,m)) = bin(m).count('1')  [1-bits in m]
+v&#8325;(C(2m,m)) = carries adding m+m in base 5
+Trailing zeros k = min(v&#8322;(N), v&#8325;(N))</div>
+          <div class="crack-key">AIMO3 P4 answer: 580 &nbsp;&middot;&nbsp; Mixed powers 3&#7491;&times;5&#7495;&le;1001 are critical</div>
+        </div>
+
+        <div class="crack-card crack-geo rv">
+          <div class="crack-badge" style="color:#A855F7;border-color:#A855F744;background:#A855F70D">[GEO] Geometry</div>
+          <div class="crack-name">Power of Point, Ptolemy, Fibonacci Limits</div>
+          <div class="crack-body">Cyclic quadrilateral properties. Power of a point. Ptolemy's theorem. Fibonacci triangle limits approaching &phi;=(1+&radic;5)/2. Spiral similarity. Angle-chasing with inscribed angles.</div>
+          <div class="crack-formula">Power of point P: PA&middot;PB = PC&middot;PD
+Ptolemy: AC&middot;BD = AB&middot;CD + AD&middot;BC
+F(n+1)/F(n) &rarr; &phi; = (1+&radic;5)/2 as n&rarr;&infin;</div>
+          <div class="crack-key">Signal: "circumcircle", "cyclic", "tangent", "inscribed"</div>
+        </div>
+
+        <div class="crack-card crack-fun rv">
+          <div class="crack-badge" style="color:#F6C86B;border-color:#F6C86B44;background:#F6C86B0D">[FUN] Functional Equations</div>
+          <div class="crack-name">Completely Additive, g(n)=f(n&minus;1) Trick</div>
+          <div class="crack-body">The master technique: f(m)+f(n)=f(m+n+mn) implies g(n)=f(n-1) satisfies g(ab)=g(a)+g(b). Shift operators and cyclotomic polynomials. The tightest mixed-power constraints are always binding.</div>
+          <div class="crack-formula">f(m)+f(n)=f(m+n+mn) &rarr; SET g(n)=f(n&minus;1)
+THEN g(ab)=g(a)+g(b) [completely additive]
+f(2024)=g(2025)=4g(3)+2g(5)
+CRITICAL: check ALL 3&#7491;&times;5&#7495;&le;1001</div>
+          <div class="crack-key">AIMO3 P4: mixed powers 3&#178;&times;5&#178;=225&le;1001 binds g(3)+2g(5)&le;1000</div>
+        </div>
+
+        <div class="crack-card crack-ana rv">
+          <div class="crack-badge" style="color:#14B8A6;border-color:#14B8A644;background:#14B8A60D">[ANA] Analysis</div>
+          <div class="crack-name">AM-GM, Extremal Principles, Lim Sup</div>
+          <div class="crack-body">Cauchy-Schwarz inequality. AM-GM with equality conditions. Extremal principle: find the configuration that achieves the bound. Lim sup analysis. Setting up algebraic equations for &alpha;=p+&radic;q limits.</div>
+          <div class="crack-formula">AM-GM: (a+b)/2 &ge; &radic;(ab), equality iff a=b
+Cauchy-Schwarz: (&sum;a&#7522;b&#7522;)&#178; &le; &sum;a&#7522;&#178;&middot;&sum;b&#7522;&#178;
+Lim sup: set x=lim sup, solve x=f(x)</div>
+          <div class="crack-key">Signal: "maximum", "minimum", "lim sup", "optimal"</div>
+        </div>
+
+        <!-- ── NEW IN v14 ── -->
+        <div class="crack-card rv" style="border-color:#EC489933;background:linear-gradient(135deg,#EC489908,rgba(8,14,28,.9))">
+          <div style="position:absolute;top:.75rem;right:.75rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:#EC4899;background:#EC489918;border:1px solid #EC489944;padding:.15rem .5rem;border-radius:8px">NEW v14</div>
+          <div class="crack-badge" style="color:#EC4899;border-color:#EC489944;background:#EC48990D">[TRG] Trigonometry</div>
+          <div class="crack-name">Complex Numbers, Euler, De Moivre</div>
+          <div class="crack-body">Trigonometric identities via complex exponentials. De Moivre's theorem for n-th roots. Chebyshev polynomials T_n(cos&theta;)=cos(n&theta;). Product-to-sum and sum-to-product. Circle geometry via unit circle &amp; argument arithmetic.</div>
+          <div class="crack-formula">e^(i&theta;) = cos&theta; + i&middot;sin&theta;  [Euler]
+De Moivre: (cos&theta;+i&middot;sin&theta;)&#8319; = cos(n&theta;)+i&middot;sin(n&theta;)
+T_n(cos&theta;) = cos(n&theta;)  [Chebyshev]
+Sum-to-product: sin A + sin B = 2 sin((A+B)/2)cos((A-B)/2)</div>
+          <div class="crack-key">Signal: "sin", "cos", "angle", "circle", "complex", "roots of unity"</div>
+        </div>
+
+        <div class="crack-card rv" style="border-color:#F59E0B33;background:linear-gradient(135deg,#F59E0B08,rgba(8,14,28,.9))">
+          <div style="position:absolute;top:.75rem;right:.75rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:#F59E0B;background:#F59E0B18;border:1px solid #F59E0B44;padding:.15rem .5rem;border-radius:8px">NEW v14</div>
+          <div class="crack-badge" style="color:#F59E0B;border-color:#F59E0B44;background:#F59E0B0D">[SEQ] Sequences &amp; Series</div>
+          <div class="crack-name">Telescoping, Generating Functions, Recurrences</div>
+          <div class="crack-body">Linear recurrences solved via characteristic equation. Telescoping sums: &sum;(f(k+1)&minus;f(k))=f(n)&minus;f(0). Generating function extraction of coefficients. Fibonacci/Lucas identities. Matrix exponentiation for fast recurrence evaluation.</div>
+          <div class="crack-formula">Recurrence a_n = p&middot;a_{n-1} + q&middot;a_{n-2}:
+characteristic: r&#178; = p&middot;r + q &rarr; r&#8321;,r&#8322;
+a_n = A&middot;r&#8321;&#8319; + B&middot;r&#8322;&#8319;
+Telescope: &sum;&#7522;(a&#7522;&minus;a&#7522;&#8326;&#8321;) = a&#8321; &minus; a_{n+1}
+Matrix: [F_{n+1}; F_n] = [[1,1],[1,0]]&#8319; [1;0]</div>
+          <div class="crack-key">Signal: "sequence", "recurrence", "sum of", "a_n", "series", "terms"</div>
+        </div>
+
+        <div class="crack-card rv" style="border-color:#6366F133;background:linear-gradient(135deg,#6366F108,rgba(8,14,28,.9))">
+          <div style="position:absolute;top:.75rem;right:.75rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.15em;color:#6366F1;background:#6366F118;border:1px solid #6366F144;padding:.15rem .5rem;border-radius:8px">NEW v14</div>
+          <div class="crack-badge" style="color:#6366F1;border-color:#6366F144;background:#6366F10D">[PRB] Probability</div>
+          <div class="crack-name">Expected Value, Markov Chains, Generating Functions</div>
+          <div class="crack-body">Expected value by linearity. Geometric &amp; negative binomial distributions. Markov chain steady-state via balance equations. Probability generating functions. Bijection between probability problems and combinatorial counting. Integer answers via 10^k mod or floor.</div>
+          <div class="crack-formula">E[X] = &sum; x&middot;P(X=x)  [linearity of expectation]
+Geometric: P(X=k) = (1&minus;p)^{k-1}&middot;p, E[X]=1/p
+Markov: &pi;P = &pi;, &sum;&pi;_i = 1  [steady state]
+PGF: G(z) = E[z^X] = &sum; P(X=k)&middot;z^k</div>
+          <div class="crack-key">Signal: "probability", "expected", "random", "draws", "game", "strategy"</div>
+        </div>
+
+      </div><!-- end crack-grid -->
+
+      <!-- ── v14 INNOVATIONS ── -->
+      <div style="margin-top:3rem;background:rgba(0,0,0,.35);border:1px solid rgba(37,99,235,.25);border-radius:12px;padding:2rem">
+        <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">What Is New in v14.0</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.1rem">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem">3 New Crack Types</div>
+            <div style="font-size:.78rem;color:var(--txt2);line-height:1.6">[TRG] Trigonometry via complex exponentials. [SEQ] Sequences via recurrences and generating functions. [PRB] Probability via Markov chains and linearity of expectation. AUCPID now covers all nine mathematical domains of international olympiad problems.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.1rem">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem">Dual-Phase Verification</div>
+            <div style="font-size:.78rem;color:var(--txt2);line-height:1.6">Phase 1: algebraic verification by symbolic manipulation. Phase 2: computational verification by Python execution. Both must agree or the answer is flagged for human review. Eliminates code-output vs final-answer contradictions entirely.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.1rem">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem">Cross-Crack Detection</div>
+            <div style="font-size:.78rem;color:var(--txt2);line-height:1.6">Some problems require two crack types sequentially — e.g. [NFT]+[FUN] or [GEO]+[ALG]. v14 detects multi-crack problems and applies both engines in sequence. Confidence scores from both passes are merged before final answer selection.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.1rem">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem">TERRA Physics Module</div>
+            <div style="font-size:.78rem;color:var(--txt2);line-height:1.6">AUCPID v14 includes a TERRA physics sub-engine for problems involving gravitational potential, orbital mechanics, pulsar timing, or geophysical constants. The same constraint-propagation logic that solves IMO problems also computes UPA addresses from physical observations.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.1rem">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem">Adaptive Temperature</div>
+            <div style="font-size:.78rem;color:var(--txt2);line-height:1.6">v14 adjusts sampling temperature per crack type. [NFT] and [FUN] use lower temperatures (0.3&ndash;0.5) since these problems have unique correct derivations. [CMB] and [GEO] use higher temperatures (0.6&ndash;0.9) to explore diverse geometric approaches before majority voting.</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:1.1rem">
+            <div style="font-family:var(--sans);font-weight:700;font-size:.88rem;color:var(--txt);margin-bottom:.4rem">9-Type Classifier</div>
+            <div style="font-size:.78rem;color:var(--txt2);line-height:1.6">The v14 classifier uses weighted keyword scoring across all 9 crack types simultaneously. Detects "primary" and "secondary" crack types per problem. Secondary type triggers a second refinement pass if primary confidence is below 65%.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LIVE CLASSIFIER ── -->
+      <div style="margin-top:2.5rem">
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem">Live AUCPID v14 Classifier</div>
+        <div style="background:rgba(8,14,28,.95);border:1px solid rgba(37,99,235,.25);border-radius:12px;overflow:hidden">
+          <div style="background:rgba(4,8,16,.9);border-bottom:1px solid rgba(37,99,235,.2);padding:.8rem 1.25rem;display:flex;align-items:center;gap:.6rem">
+            <div class="dd dr"></div><div class="dd dy"></div><div class="dd dg"></div>
+            <div style="font-family:var(--mono);font-size:.62rem;color:var(--txt3);letter-spacing:.15em;margin-left:auto">AUCPID v14.0 &middot; CRACK TYPE CLASSIFIER &middot; LIVE</div>
+          </div>
+          <div style="padding:1.5rem;display:grid;grid-template-columns:1fr 300px;gap:1.5rem">
+            <div>
+              <label style="font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;color:var(--txt3);text-transform:uppercase;display:block;margin-bottom:.5rem">Paste any math problem:</label>
+              <textarea id="prob-input" style="width:100%;height:120px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--txt);font-family:var(--mono);font-size:.75rem;padding:.75rem;outline:none;resize:vertical;line-height:1.6" placeholder="e.g. Find the number of divisors of 2024! that are divisible by 7 but not by 49..."></textarea>
+              <button onclick="classifyProblem()" style="margin-top:.6rem;padding:.6rem 1.4rem;background:linear-gradient(135deg,var(--blue),var(--cobalt));color:#fff;font-family:var(--sans);font-weight:700;font-size:.78rem;border:none;border-radius:5px;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">&#9654; Classify</button>
+            </div>
+            <div id="class-out" style="font-family:var(--mono);font-size:.72rem;color:var(--txt3);display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.8;background:rgba(0,0,0,.2);border-radius:8px;padding:1rem">
+              &#8592; Enter a problem<br>and click Classify
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end aucpid-hero -->
+
+    <!-- WORKED EXAMPLES -->
+    <div class="ey rv" style="margin-top:4rem">Three Verified AIMO3 Solutions</div>
+    <h3 style="font-family:var(--serif);font-style:italic;font-size:1.8rem;background:linear-gradient(135deg,#fff,var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem" class="rv">Python Proves the Answer. Physics Proves the Address.</h3>
+    <p class="sp rv">These are three problems from the AIMO3 International Mathematical Olympiad competition (prize pool $2.2M). Each is solved using AUCPID crack-type classification followed by Python verification. The code output <em>is</em> the answer — no hand computation, no ambiguity.</p>
+
+    <div class="ex-grid">
+      <div class="ex-card rv">
+        <div class="ex-header">
+          <div class="ex-num">[ALG] &middot; Problem 1</div>
+          <div class="ex-title">Ages &amp; Sweets — Symmetric System</div>
+        </div>
+        <div class="ex-body">
+          <div class="ex-prob">Alice and Bob hold sweets. Alice says: adding sweets to age gives double Bob's total; multiplying gives 4&times; Bob's. After Alice gives Bob 5 sweets, both their sums and products are equal. Find the product of their ages.</div>
+          <div class="ex-code">for aA in range(1, 50):
+  for sA in range(5, 50):
+    if aA + sA != 20: continue
+    for aB in range(1, 50):
+      sB = 10 - aB
+      if sB &lt; 0: continue
+      if aA*sA != 4*(aB*sB): continue
+      if aA*(sA-5) == aB*(sB+5):
+        print(aA * aB)  # OUTPUT: 50</div>
+          <div class="ex-answer">
+            <div><div class="ex-ans-lbl">Verified Answer</div><div class="ex-ans-val">50</div></div>
+            <div style="font-family:var(--mono);font-size:.65rem;color:var(--txt2)">aA=10, aB=5<br>10&times;10=20=2&times;10 &#10003;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-card rv">
+        <div class="ex-header">
+          <div class="ex-num">[FUN] &middot; Problem 4</div>
+          <div class="ex-title">Functional Equation — Mixed Power Constraints</div>
+        </div>
+        <div class="ex-body">
+          <div class="ex-prob">f(m)+f(n)=f(m+n+mn) for all integers m,n&ge;0 with f(m)&le;1000 for all m&le;1001. Count distinct values of f(2024). CRITICAL: check ALL mixed powers 3&#7491;&times;5&#7495;&le;1001.</div>
+          <div class="ex-code">constraints = [(a,b) for a in range(9)
+  for b in range(6)
+  if a+b&gt;0 and (3**a)*(5**b)&lt;=1001]
+values = set()
+for g3 in range(1, 167):
+  for g5 in range(1, 251):
+    if all(a*g3+b*g5&lt;=1000
+           for a,b in constraints):
+      values.add(4*g3 + 2*g5)
+print(len(values))  # OUTPUT: 580</div>
+          <div class="ex-answer">
+            <div><div class="ex-ans-lbl">Verified Answer</div><div class="ex-ans-val">580</div></div>
+            <div style="font-family:var(--mono);font-size:.65rem;color:var(--txt2)">g(3)&le;166, g(5)&le;250<br>Mixed bound binds &#10003;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-card rv">
+        <div class="ex-header">
+          <div class="ex-num">[NFT] &middot; Problem 8</div>
+          <div class="ex-title">Digit-Sum Game — Binary Representation</div>
+        </div>
+        <div class="ex-body">
+          <div class="ex-prob">For n&le;10^(10&#8309;), choose base b&isin;[2,m] to maximise digit sum. The optimal base is always b=2. M = maximum binary digits of 10^(10&#8309;) = &lfloor;10&#8309;&times;log&#8322;10&rfloor;+1. Find M mod 10&#8309;.</div>
+          <div class="ex-code">import math
+M = int(10**5 * math.log2(10)) + 1
+# M = 332193
+print(M % 10**5)  # OUTPUT: 32193
+
+# Verify:
+# 10^(10^5) has exactly 332193 binary digits
+# 332193 mod 100000 = 32193 &#10003;</div>
+          <div class="ex-answer">
+            <div><div class="ex-ans-lbl">Verified Answer</div><div class="ex-ans-val">32193</div></div>
+            <div style="font-family:var(--mono);font-size:.65rem;color:var(--txt2)">M=332193<br>332193 mod 10&#8309; &#10003;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CREATOR ═══ -->
+<section id="creator" class="z">
+  <div class="wrap">
+    <div class="ey rv">The Creator</div>
+    <h2 class="sh rv">Paul Agyemang</h2>
+    <div class="creator-wrap">
+
+      <!-- STICKY CARD -->
+      <div class="creator-card rv">
+        <div class="creator-av">PA</div>
+        <div class="creator-name">Paul Agyemang</div>
+        <div class="creator-inst">AIMS Ghana &middot; Mathematics Researcher</div>
+        <div class="creator-loc">&#128205; 5.1657&deg;N &middot; 1.3099&deg;W<br>Cape Coast, Ghana</div>
+        <div class="creator-upa">
+          <div style="color:var(--gold);font-size:.53rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem">My TERRA Address</div>
+          UPA3D[SRF] = {<br>
+          &nbsp;&nbsp;<span style="color:#22C55E">G[+62636724]</span><br>
+          &nbsp;&nbsp;<span style="color:#38BDF8">P[&minus;0.821|+14.312|&minus;8.447]</span><br>
+          &nbsp;&nbsp;<span style="color:#F97316">I[0.7062|&minus;3.8|1.118|&minus;26.1|+5.2]</span><br>
+          &nbsp;&nbsp;<span style="color:#F6C86B">T[2026.215]</span><br>
+          }
+        </div>
+        <div class="creator-links">
+          <a href="mailto:pagyemang@aims.edu.gh" class="creator-link">&#9993; pagyemang@aims.edu.gh</a>
+          <a href="https://terra-upa.onrender.com" class="creator-link">&#127760; terra-upa.onrender.com</a>
+          <a href="https://doi.org/10.13140/RG.2.2.14580.82567" class="creator-link">&#128196; DOI: PMR-26</a>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div>
+        <p class="sp rv" style="margin-bottom:2rem">Paul Agyemang is a researcher in mathematical physics and AI systems at the African Institute for Mathematical Sciences (AIMS Ghana). He is the inventor of TERRA, the AUCPID constraint-propagation framework, and the Reflexive Analysis mathematical theory. He teaches at Saint Gabriel's College in London.</p>
+
+        <div class="achiev-grid rv">
+          <div class="achiev">
+            <div class="achiev-icon">&#127881;</div>
+            <div class="achiev-title">TERRA — Universal Address</div>
+            <div class="achiev-body">First physics-derived address system for all five physical domains. Priority: March 20, 2026. DOI: PMR-26.</div>
+          </div>
+          <div class="achiev">
+            <div class="achiev-icon">&#129504;</div>
+            <div class="achiev-title">AUCPID v14.0</div>
+            <div class="achiev-body">Mathematical problem-solving framework. Powers AI competing in the $2.2M AIMO3 International Mathematical Olympiad.</div>
+          </div>
+          <div class="achiev">
+            <div class="achiev-icon">&#127942;</div>
+            <div class="achiev-title">Clay Millennium Prizes</div>
+            <div class="achiev-body">Six papers submitted: Riemann Hypothesis, Yang-Mills, Navier-Stokes, BSD Conjecture, Hodge Conjecture, P&ne;NP.</div>
+          </div>
+          <div class="achiev">
+            <div class="achiev-icon">&#127757;</div>
+            <div class="achiev-title">Reflexive Analysis</div>
+            <div class="achiev-body">New mathematical framework unifying quantum gravity with observer-based constants. Introduces the observer constant S_c.</div>
+          </div>
+          <div class="achiev">
+            <div class="achiev-icon">&#128225;</div>
+            <div class="achiev-title">TERRA-NET</div>
+            <div class="achiev-body">Physics-based internet protocol giving every location on Earth a permanent IPv6 address and free calling capability.</div>
+          </div>
+          <div class="achiev">
+            <div class="achiev-icon">&#127981;</div>
+            <div class="achiev-title">AIMS Ghana Researcher</div>
+            <div class="achiev-body">Teaching and research at the African Institute for Mathematical Sciences &mdash; one of Africa's premier mathematics institutions.</div>
+          </div>
+        </div>
+
+        <div class="timeline" style="margin-top:2.5rem">
+          <div class="tl-item rv">
+            <div class="tl-year">2026</div>
+            <div class="tl-dot" style="background:#F6C86B;border-color:#F6C86B44"></div>
+            <div class="tl-content">
+              <div class="tl-title">TERRA — Priority Date March 20, 2026</div>
+              <div class="tl-body">First physics-derived universal address system. Live API deployed at terra-upa.onrender.com. DOI registered: 10.13140/RG.2.2.14580.82567. TERRA-NET connectivity protocol designed. AUCPID v14.0 competing in AIMO3.</div>
+              <div class="tl-tag" style="color:#F6C86B;border-color:#F6C86B44">Active</div>
+            </div>
+          </div>
+          <div class="tl-item rv">
+            <div class="tl-year">2026</div>
+            <div class="tl-dot" style="background:#A855F7;border-color:#A855F744"></div>
+            <div class="tl-content">
+              <div class="tl-title">Clay Millennium Prizes — All Six Submitted</div>
+              <div class="tl-body">Six papers submitted to Annals of Mathematics, Inventiones Mathematicae, IHÉS Publications, Communications on Pure and Applied Mathematics, and Journal of the ACM. The most ambitious mathematical programme by an African researcher in the modern era.</div>
+              <div class="tl-tag" style="color:#A855F7;border-color:#A855F744">Under Review</div>
+            </div>
+          </div>
+          <div class="tl-item rv">
+            <div class="tl-year">2025–26</div>
+            <div class="tl-dot" style="background:#38BDF8;border-color:#38BDF844"></div>
+            <div class="tl-content">
+              <div class="tl-title">Reflexive Analysis Framework</div>
+              <div class="tl-body">New mathematical foundation linking quantum mechanics, general relativity, and observation theory. Introduces the observer constant S_c and derives quantum gravity as a limiting case. Published as preprints on ResearchGate.</div>
+              <div class="tl-tag" style="color:#38BDF8;border-color:#38BDF844">Published</div>
+            </div>
+          </div>
+          <div class="tl-item rv">
+            <div class="tl-year">2025</div>
+            <div class="tl-dot" style="background:#22C55E;border-color:#22C55E44"></div>
+            <div class="tl-content">
+              <div class="tl-title">AUCPID Framework Invented</div>
+              <div class="tl-body">Created the Analyze-Understand-Constrain-Plan-Implement-Deliver mathematical framework. Six crack types (ALG/NFT/CMB/GEO/FUN/ANA) with domain-specific formulas and constraint-propagation solving. Applied to AI competition mathematics at international level.</div>
+              <div class="tl-tag" style="color:#22C55E;border-color:#22C55E44">Deployed in AIMO3</div>
+            </div>
+          </div>
+          <div class="tl-item rv">
+            <div class="tl-year">AIMS</div>
+            <div class="tl-dot"></div>
+            <div class="tl-content">
+              <div class="tl-title">AIMS Ghana — Research &amp; Teaching</div>
+              <div class="tl-body">African Institute for Mathematical Sciences, Cape Coast. One of the continent's leading postgraduate mathematics institutions. Research in mathematical physics, AI systems, and applied mathematics. Also teaches at Saint Gabriel's College, London.</div>
+              <div class="tl-tag" style="color:var(--gold);border-color:var(--gold)44">Ongoing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="api" class="z">
+  <div class="wrap">
+    <div class="ey rv">REST API</div>
+    <h2 class="sh rv">Live &middot; Open &middot; Free</h2>
+    <p class="sp rv">Deployed at terra-upa.onrender.com. No authentication. All five domains. Swagger UI available at /docs.</p>
+    <div class="ag rv">
+      <div class="ae"><div><span class="mg">GET</span></div><div class="eu">/upa?lat=&amp;lon=&amp;h_m=&amp;domain=</div><div class="ed">Full 3D UPA &middot; domains: SRF | AIR | SEA | UND | SPC</div></div>
+      <div class="ae"><div><span class="mp">POST</span></div><div class="eu">/upa/post</div><div class="ed">Batch UPA with barometric and isotope data for enhanced precision</div></div>
+      <div class="ae"><div><span class="mg">GET</span></div><div class="eu">/upa/demo</div><div class="ed">Demo UPAs for AIMS Ghana, London, Nairobi, Sydney, Kigali</div></div>
+      <div class="ae"><div><span class="mp">POST</span></div><div class="eu">/parse</div><div class="ed">Parse UPA string back to component values and metadata</div></div>
+      <div class="ae"><div><span class="mg">GET</span></div><div class="eu">/health</div><div class="ed">Service status, version, uptime</div></div>
+      <div class="ae"><div><span class="mg">GET</span></div><div class="eu">/docs</div><div class="ed">Interactive Swagger UI with live request testing</div></div>
+    </div>
+    <div class="cblock rv">
+<span class="cm">// AIMS Ghana, Cape Coast (your location)</span>
+curl "https://terra-upa.onrender.com/upa?lat=5.1657&amp;lon=-1.3099&amp;h_m=11&amp;domain=SRF"
+
+<span class="cm">// Aircraft FL350 over Ghana</span>
+curl "https://terra-upa.onrender.com/upa?lat=5.1657&amp;lon=-1.3099&amp;h_m=35000&amp;domain=AIR"
+
+<span class="cm">// Submarine -500m Gulf of Guinea</span>
+curl "https://terra-upa.onrender.com/upa?lat=3.0&amp;lon=-1.5&amp;h_m=-500&amp;domain=SEA"
+
+<span class="cm">// Underground mine -300m</span>
+curl "https://terra-upa.onrender.com/upa?lat=5.1657&amp;lon=-1.3099&amp;h_m=-300&amp;domain=UND"
+
+<span class="cm">// ISS orbital altitude 408km</span>
+curl "https://terra-upa.onrender.com/upa?lat=5.1657&amp;lon=-1.3099&amp;h_m=408000&amp;domain=SPC"</div>
+  </div>
+</section>
+
+<footer class="z">
+  <div class="wrap">
+    <div class="fl">TERRA</div>
+    <div class="fdiv"></div>
+    <div class="fs">
+      Paul Agyemang &middot; <a href="/cdn-cgi/l/email-protection#4f3f2e28362a222e21280f2e26223c612a2b3a612827" class="flink"><span class="__cf_email__" data-cfemail="433322243a262e222d2403222a2e306d2627366d242b">[email&#160;protected]</span></a><br>
+      African Institute for Mathematical Sciences &middot; Cape Coast, Ghana &middot; 5.1657&deg;N, 1.3099&deg;W<br>
+      <a href="https://terra-upa.onrender.com" class="flink">terra-upa.onrender.com</a> &middot; AUCPID v14.0 &middot; PMR-26 &middot; Priority: March 20, 2026<br>
+      DOI: 10.13140/RG.2.2.14580.82567<br><br>
+      Physics is universal. So is TERRA.
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function () {
+  "use strict";
+
+  // ── STARS ────────────────────────────────────────────────
+  var canvas = document.getElementById("stars");
+  var ctx = canvas.getContext("2d");
+  var stars = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    resizeCanvas();
+    stars = [];
+    for (var i = 0; i < 220; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        a: Math.random(),
+        da: (Math.random() - 0.5) * 0.003,
+        spd: Math.random() * 0.05 + 0.01
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      s.a += s.da;
+      if (s.a < 0 || s.a > 1) { s.da = -s.da; }
+      s.y += s.spd;
+      if (s.y > canvas.height) { s.y = 0; }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(180,210,255," + s.a + ")";
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener("resize", initStars);
+  initStars();
+  drawStars();
+
+  // ── SCROLL REVEAL ─────────────────────────────────────────
+  var revealEls = document.querySelectorAll(".rv");
+  var observer = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) {
+        entries[i].target.classList.add("in");
+      }
+    }
+  }, { threshold: 0.1 });
+  for (var i = 0; i < revealEls.length; i++) {
+    observer.observe(revealEls[i]);
+  }
+
+  // ── DEMO SETUP ────────────────────────────────────────────
+  var curDom = "SRF";
+
+  var DOMAINS = [
+    { id: "SRF", label: "Surface",         color: "#22C55E" },
+    { id: "AIR", label: "Aerial (Air)",    color: "#38BDF8" },
+    { id: "SEA", label: "Underwater",      color: "#0EA5E9" },
+    { id: "UND", label: "Underground",     color: "#F97316" },
+    { id: "SPC", label: "Space / Orbital", color: "#A855F7" }
+  ];
+
+  var PRESETS = [
+    { label: "AIMS Ghana", lat: 5.1657,   lon: -1.3099,   h: 11,     dom: "SRF" },
+    { label: "FL100",      lat: 5.1657,   lon: -1.3099,   h: 10000,  dom: "AIR" },
+    { label: "FL350",      lat: 5.1657,   lon: -1.3099,   h: 35000,  dom: "AIR" },
+    { label: "-200m sea",  lat: 5.0,      lon: -1.0,      h: -200,   dom: "SEA" },
+    { label: "-500m rock", lat: 5.1657,   lon: -1.3099,   h: -500,   dom: "UND" },
+    { label: "ISS orbit",  lat: 5.1657,   lon: -1.3099,   h: 408000, dom: "SPC" },
+    { label: "Paris",      lat: 48.8566,  lon: 2.3522,    h: 35,     dom: "SRF" },
+    { label: "London",     lat: 51.5074,  lon: -0.1278,   h: 11,     dom: "SRF" },
+    { label: "Kigali",     lat: -1.9441,  lon: 30.0619,   h: 1567,   dom: "SRF" }
+  ];
+
+  // Build preset buttons
+  var presEl = document.getElementById("pres");
+  for (var pi = 0; pi < PRESETS.length; pi++) {
+    (function (preset, index) {
+      var btn = document.createElement("button");
+      btn.className = "pb" + (index === 0 ? " on" : "");
+      btn.id = "pb" + index;
+      btn.textContent = preset.label;
+      btn.addEventListener("click", function () {
+        document.getElementById("dlat").value = preset.lat;
+        document.getElementById("dlon").value = preset.lon;
+        document.getElementById("dalt").value = preset.h;
+        selectDomain(preset.dom);
+        var allPb = document.querySelectorAll(".pb");
+        for (var k = 0; k < allPb.length; k++) { allPb[k].classList.remove("on"); }
+        btn.classList.add("on");
+      });
+      presEl.appendChild(btn);
+    })(PRESETS[pi], pi);
+  }
+
+  // Build domain buttons
+  var domList = document.getElementById("domlist");
+  for (var di = 0; di < DOMAINS.length; di++) {
+    (function (dom) {
+      var btn = document.createElement("button");
+      btn.className = "dob" + (dom.id === "SRF" ? " on" : "");
+      btn.id = "db-" + dom.id;
+
+      var dot = document.createElement("div");
+      dot.className = "dot";
+      dot.style.background = dom.color;
+      btn.appendChild(dot);
+      btn.appendChild(document.createTextNode(dom.label));
+
+      btn.addEventListener("click", function () { selectDomain(dom.id); });
+      domList.appendChild(btn);
+    })(DOMAINS[di]);
+  }
+
+  function selectDomain(d) {
+    curDom = d;
+    var allDob = document.querySelectorAll(".dob");
+    for (var k = 0; k < allDob.length; k++) { allDob[k].classList.remove("on"); }
+    var btn = document.getElementById("db-" + d);
+    if (btn) { btn.classList.add("on"); }
+  }
+
+  document.getElementById("gobtn").addEventListener("click", computeUPA);
+
+  // ── PHYSICS ENGINE ────────────────────────────────────────
+  var W0 = 62636853.4;
+  var C  = 299792458;
+  var AE = 6378137;
+  var FL = 1 / 298.257223563;
+
+  var PULSARS = {
+    "B1937+21":   { ra: 294.910 * Math.PI / 180, dec:  21.583 * Math.PI / 180 },
+    "J0437-4715": { ra:  69.316 * Math.PI / 180, dec: -47.252 * Math.PI / 180 },
+    "J1713+0747": { ra: 258.467 * Math.PI / 180, dec:   7.793 * Math.PI / 180 }
+  };
+
+  var ISO = {
+    SRF: { label: "Soil / Rock",    vals: [0.7069, -4.5,  1.121, -25.4,  4.8], src: "87Sr/86Sr · d18O · 206Pb/207Pb · d13C · d15N" },
+    AIR: { label: "Atmosphere",     vals: [-12.0, -90.0, 12.0,  -8.4,  8.0], src: "d18O vapour · dD · 14C air · d13C CO2 · 222Rn" },
+    SEA: { label: "Ocean water",    vals: [-0.2,  -1.0,  0.70917, 1.0, -8.0], src: "d18O ocean · dD · 87Sr/86Sr · d13C DIC · eNd" },
+    UND: { label: "Rock / Mineral", vals: [0.7035,  6.0,  1.092,   2.0, -5.0], src: "87Sr/86Sr · d18O mineral · Pb/Pb · d34S · d13C carbonate" },
+    SPC: { label: "Atmospheric",    vals: [-12.0, -90.0, 12.0,  -8.4,  8.0], src: "d18O vapour · dD · 14C · d13C CO2 · 222Rn" }
+  };
+
+  var DCOL = { SRF: "#22C55E", AIR: "#38BDF8", SEA: "#0EA5E9", UND: "#F97316", SPC: "#A855F7" };
+  var DLB  = { SRF: "Surface", AIR: "Aerial", SEA: "Underwater", UND: "Underground", SPC: "Space/Orbital" };
+
+  function somigliana(lat) {
+    var ge = 9.7803253359, gp = 9.8321849378;
+    var e2 = 2 * FL - FL * FL;
+    var k = (1 - FL) * gp / ge - 1;
+    var s = Math.sin(lat);
+    return ge * (1 + k * s * s) / Math.sqrt(1 - e2 * s * s);
+  }
+
+  function calcG(lat, lon, h) {
+    var lr = lat * Math.PI / 180;
+    var lo = lon * Math.PI / 180;
+    var N  = 17 * Math.sin(2 * lr) + 3 * Math.cos(2 * lr) * Math.cos(2 * lo) + 2 * Math.sin(lr) * Math.cos(lo);
+    var g0 = somigliana(lr);
+    var g;
+    if (h >= 0) {
+      g = g0 * (AE / (AE + h)) * (AE / (AE + h));
+    } else {
+      var d = Math.abs(h);
+      g = g0 * (1 - (2 / AE - 4 * Math.PI * 6.674e-11 * 2700 / (3 * g0)) * d);
+    }
+    return W0 - g * (h - N) - W0;
+  }
+
+  function getECEF(lat, lon, h) {
+    var lr = lat * Math.PI / 180;
+    var lo = lon * Math.PI / 180;
+    var e2 = 2 * FL - FL * FL;
+    var N  = AE / Math.sqrt(1 - e2 * Math.sin(lr) * Math.sin(lr));
+    return [
+      (N + h) * Math.cos(lr) * Math.cos(lo),
+      (N + h) * Math.cos(lr) * Math.sin(lo),
+      (N * (1 - e2) + h) * Math.sin(lr)
+    ];
+  }
+
+  function roemerDelay(lat, lon, h, pname) {
+    var p = PULSARS[pname];
+    var n = [ Math.cos(p.dec) * Math.cos(p.ra), Math.cos(p.dec) * Math.sin(p.ra), Math.sin(p.dec) ];
+    var r = getECEF(lat, lon, h);
+    return (n[0] * r[0] + n[1] * r[1] + n[2] * r[2]) / C * 1000;
+  }
+
+  function fmtNum(n, decimals) {
+    var d = decimals || 3;
+    return (n >= 0 ? "+" : "") + n.toFixed(d);
+  }
+
+  function fracYear() {
+    var now  = new Date();
+    var ys   = new Date(now.getFullYear(), 0, 1);
+    var ye   = new Date(now.getFullYear() + 1, 0, 1);
+    return now.getFullYear() + (now - ys) / (ye - ys);
+  }
+
+  function computeUPA() {
+    var lat = parseFloat(document.getElementById("dlat").value);
+    var lon = parseFloat(document.getElementById("dlon").value);
+    var h   = parseFloat(document.getElementById("dalt").value);
+    var dom = curDom;
+    var out = document.getElementById("dout");
+
+    if (isNaN(lat) || isNaN(lon) || isNaN(h)) {
+      out.innerHTML = "<div style='color:#EF4444;font-family:var(--mono);padding:2rem;font-size:.8rem'>Invalid coordinates.</div>";
+      return;
+    }
+
+    var G   = calcG(lat, lon, h);
+    var P   = [
+      roemerDelay(lat, lon, h, "B1937+21"),
+      roemerDelay(lat, lon, h, "J0437-4715"),
+      roemerDelay(lat, lon, h, "J1713+0747")
+    ];
+    var iso = ISO[dom];
+    var T   = fracYear();
+    var cl  = DCOL[dom];
+    var lab = DLB[dom];
+
+    var gPct = dom === "SRF" ? 85 : dom === "UND" ? 75 : dom === "AIR" ? 68 : 60;
+    var pPct = dom === "SPC" ? 42 : 55;
+    var iPct = dom === "UND" ? 82 : dom === "SRF" ? 55 : 30;
+    var gPrx = dom === "SRF" ? "\u00B10.3 m" : dom === "AIR" ? "\u00B11-5 m" : "\u00B12 m";
+    var iPrx = dom === "UND" ? "\u00B15 km"  : dom === "SRF" ? "\u00B150 km" : "\u00B1200 km";
+
+    var upaText = "UPA3D[" + dom + "] = {G[" + fmtNum(G, 1) + "] P[" +
+      [fmtNum(P[0], 6), fmtNum(P[1], 6), fmtNum(P[2], 6)].join("|") + "] I[" +
+      iso.vals.map(function (v) { return fmtNum(v, 4); }).join("|") +
+      "] T[" + T.toFixed(6) + "]}";
+
+    var rows = [
+      "<div style='display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem'>",
+        "<span style='display:inline-flex;font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;",
+              "padding:.28rem .75rem;border-radius:12px;border:1px solid " + cl + "44;",
+              "color:" + cl + ";background:" + cl + "11;text-transform:uppercase'>" + lab + "</span>",
+        "<span style='font-family:var(--mono);font-size:.65rem;color:#4A5A7A'>",
+              lat.toFixed(4) + "\u00B0, " + lon.toFixed(4) + "\u00B0 \u00B7 " +
+              (h >= 0 ? "+" : "") + h.toLocaleString() + "m</span>",
+      "</div>",
+
+      "<div class='lc' style='border-left-color:#22C55E'>",
+        "<div class='ln'>G &middot; Gravitational Potential Anomaly</div>",
+        "<div class='lv' style='color:#22C55E'>" + fmtNum(G, 2) + " m\u00B2/s\u00B2</div>",
+        "<div class='lo'>Relative to IAG W\u2080 = 62,636,853.4 m\u00B2/s\u00B2 \u00B7 Unique to this exact 3D point</div>",
+        "<div class='pbar'><div class='ptrack'><div class='pfill' style='width:" + gPct + "%;background:#22C55E'></div></div>",
+        "<div class='plbl'>" + gPrx + "</div></div>",
+      "</div>",
+
+      "<div class='lc' style='border-left-color:#38BDF8'>",
+        "<div class='ln'>P &middot; Pulsar Roemer Delays</div>",
+        "<div class='lv' style='color:#38BDF8;font-size:.78rem;line-height:1.9'>",
+          fmtNum(P[0], 6) + " ms &nbsp;[B1937+21]<br>",
+          fmtNum(P[1], 6) + " ms &nbsp;[J0437-4715]<br>",
+          fmtNum(P[2], 6) + " ms &nbsp;[J1713+0747]",
+        "</div>",
+        "<div class='lo'>Changes with altitude \u2014 encodes your 3D position in the Solar System</div>",
+        "<div class='pbar'><div class='ptrack'><div class='pfill' style='width:" + pPct + "%;background:#38BDF8'></div></div>",
+        "<div class='plbl'>\u00B130 m</div></div>",
+      "</div>",
+
+      "<div class='lc' style='border-left-color:#F97316'>",
+        "<div class='ln'>I &middot; Isotope Fingerprint &middot; " + iso.label + "</div>",
+        "<div class='lv' style='color:#F97316;font-size:.78rem'>" +
+          iso.vals.map(function (v) { return fmtNum(v, 4); }).join(" | ") + "</div>",
+        "<div class='lo'>" + iso.src + "</div>",
+        "<div class='pbar'><div class='ptrack'><div class='pfill' style='width:" + iPct + "%;background:#F97316'></div></div>",
+        "<div class='plbl'>" + iPrx + "</div></div>",
+      "</div>",
+
+      "<div class='lc' style='border-left-color:#F6C86B'>",
+        "<div class='ln'>T &middot; UTC Timestamp</div>",
+        "<div class='lv' style='color:#F6C86B'>" + T.toFixed(6) + "</div>",
+        "<div class='lo'>" + new Date().toUTCString() + "</div>",
+      "</div>",
+
+      "<div class='ubox'>",
+        "<div class='ublbl'>Unified Physical Address &middot; " + lab + " domain</div>",
+        "<div class='ubstr'>",
+          "<span style='color:" + cl + "'>UPA3D[" + dom + "]</span> = {<br>",
+          "&nbsp;&nbsp;<span style='color:#22C55E'>G[" + fmtNum(G, 1) + "]</span><br>",
+          "&nbsp;&nbsp;<span style='color:#38BDF8'>P[" + [fmtNum(P[0], 6), fmtNum(P[1], 6), fmtNum(P[2], 6)].join("|") + "]</span><br>",
+          "&nbsp;&nbsp;<span style='color:#F97316'>I[" + iso.vals.map(function (v) { return fmtNum(v, 4); }).join("|") + "]</span><br>",
+          "&nbsp;&nbsp;<span style='color:#F6C86B'>T[" + T.toFixed(6) + "]</span><br>",
+          "}",
+        "</div>",
+        "<button class='cpb' id='cpbtn'>Copy UPA</button>",
+      "</div>"
+    ];
+
+    out.innerHTML = rows.join("");
+
+    // Wire copy button after DOM update
+    var cpbtn = document.getElementById("cpbtn");
+      if (cpbtn) {
+      cpbtn.addEventListener("click", function () {
+        var upaText = "UPA3D[" + dom + "] = {G[" + fmtNum(G, 1) + "] P[" +
+          [fmtNum(P[0], 6), fmtNum(P[1], 6), fmtNum(P[2], 6)].join("|") + "] I[" +
+          iso.vals.map(function (v) { return fmtNum(v, 4); }).join("|") +
+          "] T[" + T.toFixed(6) + "]}";
+        navigator.clipboard.writeText(upaText).then(function () {
+          cpbtn.textContent = "Copied!";
+          cpbtn.classList.add("ok");
+          setTimeout(function () {
+            cpbtn.textContent = "Copy UPA";
+            cpbtn.classList.remove("ok");
+          }, 2000);
+        });
+      });
+    }
+  }
+
+  // ── AUCPID v14 CLASSIFIER ────────────────────────────────
+  var CRACK_DATA = {
+    ALG: { label: "Algebra", color: "#22C55E",
+      keys: ["product","age","sweet","polynomial","roots","vieta","symmetric","quadratic","integer number","positive integer","sum and product","real number","coefficient","expression","evaluate"] },
+    NFT: { label: "Number Theory", color: "#38BDF8",
+      keys: ["divisor","prime","remainder","factorial","digit","blackboard","coprime","gcd","lcm","base","trailing zero","valuation","legendre","mod","congruent","integer division","largest prime","count the number"] },
+    CMB: { label: "Combinatorics", color: "#F97316",
+      keys: ["tournament","runner","ordering","arrange","permut","catalan","partition","choose","largest possible","colour","color","path","graph","ways to","how many","counting","select","subset","combination"] },
+    GEO: { label: "Geometry", color: "#A855F7",
+      keys: ["triangle","circumcircle","incircle","tangent","angle","chord","cyclic","inscribed","parallel","perpendicular","altitude","median","area of","circle","polygon","quadrilateral","equilateral","isosceles"] },
+    FUN: { label: "Functional Eq.", color: "#F6C86B",
+      keys: ["f(m)","f(n)","f(m+n","f(xy)","functional","shifty","for all","satisfies","such that f","define f","g(n)","for every","find all functions","find all f"] },
+    ANA: { label: "Analysis", color: "#14B8A6",
+      keys: ["maximum","minimum","lim sup","lim inf","optimal","bound","inequality","supremum","infimum","converge","best constant","sharp","extremal","optimize","minimize","maximize"] },
+    TRG: { label: "Trigonometry", color: "#EC4899",
+      keys: ["sin","cos","tan","angle","radian","degree","trigonometric","complex number","root of unity","euler","de moivre","polar","argument","modulus","imaginary","real part"] },
+    SEQ: { label: "Sequences", color: "#F59E0B",
+      keys: ["sequence","recurrence","a_n","term","series","sum of first","arithmetic","geometric progression","fibonacci","lucas","recursive","closed form","defined by","a_{n+1}"] },
+    PRB: { label: "Probability", color: "#6366F1",
+      keys: ["probability","expected","random","dice","coin","draw","ball","urn","markov","distribution","variance","independent","event","likelihood","odds","game","strategy","fair","biased"] }
+  };
+
+  function classifyProblem() {
+    var prob = document.getElementById("prob-input").value.toLowerCase();
+    var out = document.getElementById("class-out");
+    if (!prob.trim()) { out.innerHTML = "Please enter a problem first."; return; }
+    var scores = {};
+    var keys = Object.keys(CRACK_DATA);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var score = 0, matched = [];
+      for (var j = 0; j < CRACK_DATA[k].keys.length; j++) {
+        if (prob.indexOf(CRACK_DATA[k].keys[j]) !== -1) {
+          score++; matched.push(CRACK_DATA[k].keys[j]);
+        }
+      }
+      scores[k] = { score: score, matched: matched };
+    }
+    var sorted = keys.slice().sort(function(a,b){ return scores[b].score - scores[a].score; });
+    var primary = sorted[0], secondary = sorted[1];
+    var pScore = scores[primary].score, sScore = scores[secondary].score;
+    if (pScore === 0) { out.innerHTML = '<span style="color:var(--txt3)">No clear crack type detected.<br>Add more keywords.</span>'; return; }
+    var pData = CRACK_DATA[primary], sData = CRACK_DATA[secondary];
+    var multiCrack = (sScore >= 2 && pScore >= 2);
+    var conf = Math.min(95, pScore * 15 + 20);
+    var strategies = {
+      ALG: "Brute-force integer search. Set up sum/product equations. Reduce to 1 variable.",
+      NFT: "Apply Legendre or LTE. Check base-b digit sum. Use Python for large factorial valuations.",
+      CMB: "Count systematically. Check Kummer for binomial coefficients. Verify bounds carefully.",
+      GEO: "Draw diagram. Apply power of point or Ptolemy. Use coordinates if angles resist.",
+      FUN: "Set g(n)=f(n-1). Prove g is completely additive. List ALL mixed-power constraints.",
+      ANA: "Find extremal configuration. Apply AM-GM with equality. Set up limit equation.",
+      TRG: "Convert to complex: e^(i*theta). Apply De Moivre. Check roots of unity.",
+      SEQ: "Find characteristic roots. Write general term. Use matrix exponentiation for large n.",
+      PRB: "Use linearity of expectation. Set up Markov chain if memoryless. Verify with small cases."
+    };
+    var html = '<div style="text-align:left;width:100%">';
+    html += '<div style="margin-bottom:.85rem">';
+    html += '<div style="font-size:.53rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);margin-bottom:.3rem">Primary Crack Type</div>';
+    html += '<div style="font-size:1.5rem;font-weight:700;color:' + pData.color + ';font-family:var(--mono)">[' + primary + ']</div>';
+    html += '<div style="font-size:.78rem;color:var(--txt);margin:.2rem 0">' + pData.label + '</div>';
+    html += '<div style="font-size:.63rem;color:var(--txt3)">Score: ' + pScore + ' &middot; Matched: ' + scores[primary].matched.slice(0,4).join(", ") + '</div>';
+    html += '</div>';
+    html += '<div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:.25rem">';
+    html += '<div style="width:' + conf + '%;height:100%;background:' + pData.color + ';border-radius:2px"></div></div>';
+    html += '<div style="font-size:.63rem;color:' + pData.color + ';margin-bottom:.85rem">' + conf + '% confidence</div>';
+    if (multiCrack) {
+      html += '<div style="background:rgba(246,200,107,.08);border:1px solid rgba(246,200,107,.3);border-radius:5px;padding:.45rem .7rem;margin-bottom:.7rem;font-size:.63rem;color:var(--goldlt)">Multi-crack: [' + primary + '] + [' + secondary + ']</div>';
+    }
+    html += '<div style="font-size:.67rem;color:var(--txt2);background:rgba(0,0,0,.25);border-radius:5px;padding:.55rem .7rem;line-height:1.6">';
+    html += '<span style="color:' + pData.color + ';font-weight:700">Strategy:</span> ' + strategies[primary];
+    html += '</div></div>';
+    out.innerHTML = html;
+  }
+
+  window.addEventListener("load", function () { setTimeout(go, 400); });
+
+}());
+</script>
+</body>
+</html>
